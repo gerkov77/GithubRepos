@@ -11,7 +11,8 @@ struct RepoListScreen {
     
     
     @StateObject var viewModel = RepoListViewModel()
-    
+    @State var shouldShowDetailScreen: Bool = false
+    @State var selectedRepo: Repository?
     var userName: String
     
     init(userName: String) {
@@ -28,23 +29,29 @@ extension RepoListScreen: View {
         Group {
             if viewModel.repos.isEmpty {
                 EmptyStateView()
-                  
             }
             else {
-                
-                ScrollView {
-                    LazyVStack {
-                        ForEach(viewModel.repos, id: \.id) { repo in
-                            RepoListRow(
-                                repoName: repo.name,
-                                userName: repo.owner.login,
-                                imageUrl: repo.owner.avatarUrl
-                            )
+                    List(selection: $selectedRepo) {
+                        VStack {
+                            ForEach(viewModel.repos, id: \.id) { repo in
+                                RepoListRow(
+                                    repoName: repo.name,
+                                    userName: repo.owner.login,
+                                    imageUrl: repo.owner.avatarUrl
+                                )
+                                .onTapGesture {
+                                    shouldShowDetailScreen = true
+                                    selectedRepo =  repo
+                                }
+                                .sheet(isPresented: $shouldShowDetailScreen) {
+                                    RepoDetaislScreen(text: selectedRepo!.name)
+                                }
+                            }
                         }
                         StateDependentView(userName: userName)
                             .environmentObject(viewModel)
                     }
-                }
+
                 .onDisappear {
                     viewModel.resetSearch()
                 }
@@ -55,6 +62,13 @@ extension RepoListScreen: View {
         }
     }
 }
+
+struct RepoListScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        RepoListScreen(userName: "twostraws")
+    }
+}
+
 
 extension RepoListScreen {
     struct StateDependentView: View {
@@ -82,8 +96,3 @@ extension RepoListScreen {
     }
 }
 
-struct RepoListScreen_Previews: PreviewProvider {
-    static var previews: some View {
-        RepoListScreen(userName: "twostraws")
-    }
-}

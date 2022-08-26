@@ -8,7 +8,6 @@
 import Foundation
 
 
-
  class ReposListService: ObservableObject {
     
     @Published var repos: [Repository] = []
@@ -31,7 +30,6 @@ import Foundation
                         hasMoreRepos = false
                     }
                 })
-            
             page += 1
         }
     }
