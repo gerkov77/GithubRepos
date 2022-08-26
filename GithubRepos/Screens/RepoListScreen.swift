@@ -39,6 +39,7 @@ extension RepoListScreen: View {
                                     userName: repo.owner.login,
                                     imageUrl: repo.owner.avatarUrl
                                 )
+                                .contentShape(Rectangle())
                                 .onTapGesture {
                                     shouldShowDetailScreen = true
                                     selectedRepo =  repo

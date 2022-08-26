@@ -10,11 +10,21 @@ import Combine
 
 class RepoDetailsViewModel: ObservableObject {
     
+    enum State: Comparable, Equatable {
+        case idle
+        case processing
+    }
+    
     @Published var repo: Repository?
+    @Published var state: State = .idle
     let service: RepoService = RepoService()
     var bag = Set<AnyCancellable>()
     
     func fetchRepo(name: String, user: String) {
+        guard state == .idle else {
+            return
+        }
+        state = .processing
         Task {
             do {
              try await service.fetchRepo(user: user, repo: name)
@@ -23,6 +33,7 @@ class RepoDetailsViewModel: ObservableObject {
                         self?.repo = repo
                     }
                     .store(in: &bag)
+                    self?.state = .idle
                 }
             }
             catch let err {

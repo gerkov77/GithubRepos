@@ -18,57 +18,17 @@ extension RepoDetailsScreen: View {
     var body: some View {
         NavigationView {
             VStack {
-                AsyncImage(url: URL(string: viewModel.repo?.owner.avatarUrl ?? "")) { image in
-                    image
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                } placeholder: {
-                    Image("github-120")
-                        .resizable()
-                        .frame(width: 120, height: 120)
-                        .clipShape(Circle())
-                        .padding()
-                }
-                .padding(.top, 40)
-            
-
-                HStack {
-                    Text("Created by: ")
-                        .font(Appfonts.medium(size: 17).font)
-                    
-                    Text(viewModel.repo?.owner.login ?? "")
-                        .font(Appfonts.bold(size: 17).font)
-                }
-                .padding(.bottom, 40)
+                ProfileSection()
+                    .padding(.bottom, 40)
+                    .environmentObject(viewModel)
                 
-                HStack  {
-                    Text( "Language:")
-                        .font(Appfonts.medium(size: 17).font)
-                    
-                    Text( viewModel.repo?.language ?? "")
-                        .font(Appfonts.medium(size: 17).font)
-                }
-                .padding(4)
-                
-                HStack {
-                    Text("Created at: ")
-                        .font(Appfonts.medium(size: 17).font)
-                    
-                    Text(viewModel.formattedDate)
-                        .font(Appfonts.medium(size: 17).font)
-                }
-                .padding(4)
-                
-                Text(viewModel.repo?.description ?? "No description available")
+                InfoSection()
+                    .environmentObject(viewModel)
                 
                 Spacer()
                 
-                Button {
+                StarButton {
                     
-                } label: {
-                    
-                    Image(systemName: "star")
                 }
                 .padding(.bottom, 100)
                 .navigationTitle(Text(name))
@@ -84,5 +44,96 @@ extension RepoDetailsScreen: View {
 struct RepoDetaislScreen_Previews: PreviewProvider {
     static var previews: some View {
         RepoDetailsScreen(name: "vaccinationbooking", user: "gerkov77")
+    }
+}
+
+struct InfoSection: View {
+    
+    @EnvironmentObject var viewModel: RepoDetailsViewModel
+    
+    var body: some View {
+        HStack  {
+            Text( "Language:")
+                .font(Appfonts.medium(size: 17).font)
+            
+            Text((viewModel.repo?.language) ?? "could not fetch language")
+                .font(Appfonts.medium(size: 17).font)
+        }
+        .padding(4)
+        
+        HStack {
+            Text("Created at: ")
+                .font(Appfonts.medium(size: 17).font)
+            
+            Text(viewModel.formattedDate)
+                .font(Appfonts.medium(size: 17).font)
+        }
+        .padding(4)
+        
+        Text(viewModel.repo?.description ?? "No description available")
+    }
+}
+
+struct ProfileSection: View {
+    @EnvironmentObject var viewModel: RepoDetailsViewModel
+    
+    var body: some View {
+        AsyncImage(url: URL(string: viewModel.repo?.owner.avatarUrl ?? "")) { image in
+            image
+                .resizable()
+                .frame(width: 120, height: 120)
+                .clipShape(Circle())
+        } placeholder: {
+            Image("github-120")
+                .resizable()
+                .frame(width: 120, height: 120)
+                .clipShape(Circle())
+                .padding()
+        }
+        .padding(.top, 40)
+        
+        
+        HStack {
+            Text("Created by: ")
+                .font(Appfonts.medium(size: 17).font)
+            
+            Text(viewModel.repo?.owner.login ?? "")
+                .font(Appfonts.bold(size: 17).font)
+        }
+    }
+}
+
+struct StarButton {
+    let action: () -> Void
+    @State var isOn: Bool = false
+}
+
+extension StarButton: View {
+    var body: some View {
+        Button {
+            withAnimation(.default) {
+                isOn.toggle()
+            }
+            action()
+        } label: {
+            if !isOn {
+                VStack {
+                    Image(systemName: "star")
+                        .foregroundColor(.orange)
+                        
+                    Text("Add")
+                        .foregroundColor(.orange)
+                }
+            }
+            else {
+                VStack {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.orange)
+                    
+                    Text("Remove")
+                        .foregroundColor(.orange)
+                }
+            }
+        }
     }
 }
