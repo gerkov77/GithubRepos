@@ -7,23 +7,32 @@
 
 import SwiftUI
 
-struct StarredReposListScreen: View {
+struct StarredReposListScreen {
+    @StateObject var viewModel: StarredReposViewModel = StarredReposViewModel()
+}
+
+extension StarredReposListScreen: View {
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 1) {
-                    ForEach(Repository.allMockRepos, id: \.id) { repo in
-                        RepoListRow(
-                            repoName: repo.name,
-                            userName: repo.owner.login,
-                            imageUrl: repo.owner.avatarUrl
-                        )
+                    if let repos = viewModel.repos {
+                        
+                        ForEach(repos, id: \.id) { repo in
+                            RepoListRow(
+                                repoName: repo.name,
+                                userName: repo.owner?.login ?? "",
+                                imageUrl: repo.owner?.avatarUrl ?? ""
+                            )
+                        }
                     }
-                    
                 }
             }
             .navigationTitle("Starred repos")
+            .onAppear {
+                viewModel.fetchRepos()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

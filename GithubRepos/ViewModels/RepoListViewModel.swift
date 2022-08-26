@@ -17,15 +17,16 @@ final class RepoListViewModel: ObservableObject {
         case error(String)
     }
     
-    
     @Published var repos: [Repository] = []
     @Published var state: State = .idle {
         didSet {
             print("state is now \(state)")
         }
     }
-    var service = ReposListService()
-    var bag = Set<AnyCancellable>()
+    
+    private var apiService = ReposListService()
+    private var storageService = PersistenceService()
+    private var bag = Set<AnyCancellable>()
     
     init() {
         state = .idle
@@ -36,9 +37,9 @@ final class RepoListViewModel: ObservableObject {
         state = .loading
         Task {
             do {
-                try await service.fetchRepos(for: userName)
+                try await apiService.fetchRepos(for: userName)
                 await MainActor.run { [weak self] in
-                    service.$repos.sink { repos in
+                    apiService.$repos.sink { repos in
                         self?.repos = repos
                     }
                     .store(in: &bag)
@@ -56,7 +57,7 @@ final class RepoListViewModel: ObservableObject {
     
     @MainActor
     func finishedLoading() {
-        if service.hasMoreRepos {
+        if apiService.hasMoreRepos {
             print(">>has more repos")
             state = .idle
         } else {
@@ -66,7 +67,15 @@ final class RepoListViewModel: ObservableObject {
     }
     
     func resetSearch() {
-        service.hasMoreRepos = true
-        service.page = 1
+        apiService.hasMoreRepos = true
+        apiService.page = 1
+    }
+}
+
+
+extension RepoListViewModel {
+    
+    func saveRepo(repo: Repository) {
+        
     }
 }

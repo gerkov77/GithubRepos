@@ -17,7 +17,8 @@ class RepoDetailsViewModel: ObservableObject {
     
     @Published var repo: Repository?
     @Published var state: State = .idle
-    let service: RepoService = RepoService()
+    private(set) var apiService: RepoService = RepoService()
+    private(set) var storageService: PersistenceService = PersistenceService()
     var bag = Set<AnyCancellable>()
     
     func fetchRepo(name: String, user: String) {
@@ -27,9 +28,9 @@ class RepoDetailsViewModel: ObservableObject {
         state = .processing
         Task {
             do {
-             try await service.fetchRepo(user: user, repo: name)
+             try await apiService.fetchRepo(user: user, repo: name)
                 await MainActor.run { [weak self] in
-                    service.$repo.sink { repo in
+                    apiService.$repo.sink { repo in
                         self?.repo = repo
                     }
                     .store(in: &bag)
@@ -41,13 +42,6 @@ class RepoDetailsViewModel: ObservableObject {
             }
         }
     }
-    
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.locale = Calendar.current.locale
-        return  formatter
-    }()
 }
 
 extension RepoDetailsViewModel {
@@ -60,3 +54,17 @@ extension RepoDetailsViewModel {
         return  dateFormatter.string(from: date)
     }
 }
+
+extension RepoDetailsViewModel {
+    func saveToStarredRepos() {
+        guard let unwrappedRepo = repo else { return }
+        storageService.save(repo: unwrappedRepo)
+    }
+}
+
+let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.locale = Calendar.current.locale
+    return  formatter
+}()

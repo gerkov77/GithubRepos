@@ -28,7 +28,7 @@ extension RepoDetailsScreen: View {
                 Spacer()
                 
                 StarButton {
-                    
+                    viewModel.saveToStarredRepos()
                 }
                 .padding(.bottom, 100)
                 .navigationTitle(Text(name))
@@ -71,6 +71,8 @@ struct InfoSection: View {
         .padding(4)
         
         Text(viewModel.repo?.description ?? "No description available")
+            .multilineTextAlignment(.leading)
+            .padding(.top, 40)
     }
 }
 
