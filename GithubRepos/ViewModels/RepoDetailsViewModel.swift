@@ -30,4 +30,22 @@ class RepoDetailsViewModel: ObservableObject {
             }
         }
     }
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Calendar.current.locale
+        return  formatter
+    }()
+}
+
+extension RepoDetailsViewModel {
+    var formattedDate: String  {
+        var date = Date()
+        if let unWrappedRepo = repo {
+            let dateString = unWrappedRepo.createdAt
+             date = dateFormatter.date(from: dateString) ?? Date()
+        }
+        return  dateFormatter.string(from: date)
+    }
 }

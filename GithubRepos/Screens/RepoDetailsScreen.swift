@@ -31,15 +31,16 @@ extension RepoDetailsScreen: View {
                         .padding()
                 }
                 .padding(.top, 40)
-                .padding(.bottom, 40)
+            
 
                 HStack {
                     Text("Created by: ")
                         .font(Appfonts.medium(size: 17).font)
                     
                     Text(viewModel.repo?.owner.login ?? "")
-                        .font(Appfonts.medium(size: 17).font)
+                        .font(Appfonts.bold(size: 17).font)
                 }
+                .padding(.bottom, 40)
                 
                 HStack  {
                     Text( "Language:")
@@ -50,15 +51,14 @@ extension RepoDetailsScreen: View {
                 }
                 .padding(4)
                 
-                
                 HStack {
                     Text("Created at: ")
                         .font(Appfonts.medium(size: 17).font)
                     
-                    Text(viewModel.repo?.createdAt ?? "")
+                    Text(viewModel.formattedDate)
                         .font(Appfonts.medium(size: 17).font)
                 }
-                .padding(.bottom, 40)
+                .padding(4)
                 
                 Text(viewModel.repo?.description ?? "No description available")
                 
