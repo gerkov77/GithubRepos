@@ -44,7 +44,7 @@ extension RepoListScreen: View {
                                     selectedRepo =  repo
                                 }
                                 .sheet(isPresented: $shouldShowDetailScreen) {
-                                    RepoDetaislScreen(text: selectedRepo!.name)
+                                    RepoDetailsScreen(name: selectedRepo!.name)
                                 }
                             }
                         }
