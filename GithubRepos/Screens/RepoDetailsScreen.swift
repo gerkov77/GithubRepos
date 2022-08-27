@@ -27,9 +27,9 @@ extension RepoDetailsScreen: View {
                 
                 Spacer()
                 
-                StarButton {
+                StarButton(action: {
                     viewModel.saveToStarredRepos()
-                }
+                }, starred: viewModel.isStarred)
                 .padding(.bottom, 100)
                 .navigationTitle(Text(name))
                 .navigationBarTitleDisplayMode(.large)
@@ -107,32 +107,38 @@ struct ProfileSection: View {
 
 struct StarButton {
     let action: () -> Void
-    @State var isOn: Bool = false
+    
+    let starred: Bool
+    
+    init(action: @escaping () -> Void,
+         starred: Bool) {
+        self.action = action
+        self.starred = starred
+    }
 }
 
 extension StarButton: View {
     var body: some View {
         Button {
-            withAnimation(.default) {
-                isOn.toggle()
-            }
+            
             action()
         } label: {
-            if !isOn {
-                VStack {
-                    Image(systemName: "star")
-                        .foregroundColor(.orange)
-                        
-                    Text("Add")
-                        .foregroundColor(.orange)
-                }
-            }
-            else {
+            if starred {
                 VStack {
                     Image(systemName: "star.fill")
                         .foregroundColor(.orange)
                     
                     Text("Remove")
+                        .foregroundColor(.orange)
+                }
+                
+            }
+            else {
+                VStack {
+                    Image(systemName: "star")
+                        .foregroundColor(.orange)
+                    
+                    Text("Add")
                         .foregroundColor(.orange)
                 }
             }

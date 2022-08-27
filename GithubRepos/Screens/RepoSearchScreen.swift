@@ -46,6 +46,7 @@ struct RepoSearchScreen: View {
                     shouldShowRepoList = true
                 }, text: "Search repos")
                 .padding()
+                .disabled(searchText.isEmpty)
             }
             .padding()
             .navigationBarHidden(true)

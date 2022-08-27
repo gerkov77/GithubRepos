@@ -16,7 +16,7 @@ extension StarredRepo {
         return NSFetchRequest<StarredRepo>(entityName: "StarredRepo")
     }
 
-    @NSManaged public var serverId: Int64
+    @NSManaged public var serverId: String
     @NSManaged public var name: String
     @NSManaged public var info: String?
     @NSManaged public var createdAt: Date
