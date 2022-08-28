@@ -44,7 +44,6 @@ extension APIManager {
         print(reposResult)
         return reposResult
     }
-    
 }
 
 extension APIManager {
@@ -58,10 +57,10 @@ extension APIManager {
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw GitHubApiError.unableToComplete
         }
-        
+
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
+
         let result = try decoder.decode(Repository.self, from: data)
         print(result)
         return result

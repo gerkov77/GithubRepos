@@ -31,11 +31,9 @@ extension RepoDetailsScreen: View {
                 StarButton(action: {
                     if !viewModel.isStarred {
                         viewModel.addRepo()
-                    }
-                    else {
+                    } else {
                       shouldShowAlert = true
                     }
-                    
                 }, starred: viewModel.isStarred)
                 .clipShape(Rectangle())
                 .padding(.bottom, 100)
@@ -62,11 +60,11 @@ struct RepoDetaislScreen_Previews: PreviewProvider {
 }
 
 struct InfoSection: View {
-    
+
     @EnvironmentObject var viewModel: RepoDetailsViewModel
     
     var body: some View {
-        HStack  {
+        HStack {
             Text( "Language:")
                 .font(Appfonts.medium(size: 17).font)
             
@@ -83,7 +81,7 @@ struct InfoSection: View {
                 .font(Appfonts.medium(size: 17).font)
         }
         .padding(4)
-        
+
         Text(viewModel.repo?.description ?? "No description available")
             .multilineTextAlignment(.leading)
             .padding(.top, 40)

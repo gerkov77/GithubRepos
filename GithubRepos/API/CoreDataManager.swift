@@ -9,7 +9,6 @@ import Foundation
 import CoreData
 
 
-
 struct CoreDataManager {
     
     static let shared = CoreDataManager()
@@ -17,10 +16,10 @@ struct CoreDataManager {
     static var preview: CoreDataManager = {
         let result = CoreDataManager(inMemory: true)
         let viewContext = result.container.viewContext
-        for i in 0..<10 {
+        for num in 0..<10 {
             let newItem = StarredRepo(context: viewContext)
             newItem.createdAt = Date()
-            newItem.name = "\(i)"
+            newItem.name = "\(num)"
         }
         do {
             try viewContext.save()
@@ -45,8 +44,8 @@ struct CoreDataManager {
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
-        
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+
+        container.loadPersistentStores(completionHandler: { (_ , error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -61,12 +60,10 @@ struct CoreDataManager {
                  */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
-            
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
-    
-    
+
     func deleteRepo(_ repo: StarredRepo) {
         viewContext.delete(repo)
         saveContext()
@@ -75,8 +72,7 @@ struct CoreDataManager {
     func getRepoById(_ id: NSManagedObjectID) -> StarredRepo? {
         do {
             return try viewContext.existingObject(with: id) as? StarredRepo
-        }
-        catch {
+        } catch {
             return nil
         }
     }

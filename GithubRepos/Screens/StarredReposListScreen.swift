@@ -37,7 +37,9 @@ extension StarredReposListScreen: View {
                         selectedRepo =  repo
                     }
                     .sheet(isPresented: $shouldShowDetailScreen) {
-                        RepoDetailsScreen(name: (selectedRepo?.name) ?? "" , user: (selectedRepo?.ownerName) ?? "")
+                        RepoDetailsScreen(
+                            name: (selectedRepo?.name) ?? "",
+                            user: (selectedRepo?.ownerName) ?? "")
                     }
                 }
                 .onDelete(perform:  deleteRepo)

@@ -9,16 +9,15 @@ import SwiftUI
 import Combine
 
 class RepoDetailsViewModel: ObservableObject {
-    
+
     enum State: Comparable, Equatable {
         case idle
         case processing
     }
-    
-   
+
     private(set) var apiService: RepoService = RepoService()
     private(set) var persistenceService: PersistenceService = PersistenceService()
-    
+
     @Published var repo: Repository?
     @Published var state: State = .idle
     @Published var isStarred: Bool = false {
@@ -28,10 +27,9 @@ class RepoDetailsViewModel: ObservableObject {
     }
 
     var bag = Set<AnyCancellable>()
-    
-    
+
     init() {}
-    
+
     func fetchRepo(name: String, user: String) {
         guard state == .idle else {
             return
@@ -44,20 +42,18 @@ class RepoDetailsViewModel: ObservableObject {
                     apiService.$repo
                         .removeDuplicates()
                         .sink { repo in
-                        self?.repo = repo
-                        self?.checkExists()
-                    }
-                    .store(in: &bag)
+                            self?.repo = repo
+                            self?.checkExists()
+                        }
+                        .store(in: &bag)
                     self?.state = .idle
                 }
-            }
-            catch let err {
+            } catch let err {
                 print(">> error while fetching repo: \(err.localizedDescription)")
             }
         }
     }
 }
-
 
 extension RepoDetailsViewModel {
     func addRepo() {
@@ -70,10 +66,8 @@ extension RepoDetailsViewModel {
                     self?.state = .idle
                     checkExists()
                 }
-            }
-            catch let err as PersistenceService.PersistenceError {
+            } catch let err as PersistenceService.PersistenceError {
                 print("ERROR: \(err.message)")
-                
             }
         }
     }
@@ -98,7 +92,7 @@ extension RepoDetailsViewModel {
 }
 
 extension RepoDetailsViewModel {
-    var formattedDate: String  {
+    var formattedDate: String {
         var date = Date()
         let formatter = DateFormatter()
         

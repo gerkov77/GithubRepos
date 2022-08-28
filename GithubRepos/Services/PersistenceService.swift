@@ -65,7 +65,7 @@ class PersistenceService: NSObject,  ObservableObject {
         guard checkIfItemExist(id: repo.id, name: repo.name) == false else {
             throw PersistenceError.itemAlreadySaved
         }
-        
+
         let context = manager.container.viewContext
         let stRepo = StarredRepo(context: context)
         let owner = Owner(context: context)
@@ -81,7 +81,7 @@ class PersistenceService: NSObject,  ObservableObject {
         
         manager.saveContext()
     }
-    
+
     enum PersistenceError: Error {
         case itemAlreadySaved
         case savingError
@@ -105,7 +105,6 @@ class PersistenceService: NSObject,  ObservableObject {
 
 extension PersistenceService {
     func delete(_ repo: StarredRepoViewModel) {
-        
         guard let existingRepo = manager.getRepoById(repo.id) else {
             return
         }
@@ -118,7 +117,6 @@ extension PersistenceService {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         formatter.locale = Calendar.current.locale
-        
         let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
         return date
     }

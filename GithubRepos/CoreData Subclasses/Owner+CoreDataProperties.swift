@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 
-
 extension Owner {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Owner> {

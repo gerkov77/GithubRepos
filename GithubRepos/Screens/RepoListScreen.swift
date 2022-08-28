@@ -20,14 +20,13 @@ struct RepoListScreen {
 }
 
 extension RepoListScreen: View {
-    
+
     var body: some View {
         
         Group {
             if viewModel.repos.isEmpty {
                 EmptyStateView()
-            }
-            else {
+            } else {
                 List(selection: $selectedRepo) {
                     ForEach(viewModel.repos,id: \.id) { repo in
                         RepoListRow(
@@ -42,7 +41,9 @@ extension RepoListScreen: View {
                         }
                     }
                     .sheet(isPresented: $shouldShowDetailScreen) {
-                        RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
+                        RepoDetailsScreen(
+                            name: selectedRepo?.name ?? "Could not fetch name",
+                            user: (selectedRepo?.owner.login) ?? "Could not fetch user")
                     }
                     .onDisappear {
                         viewModel.resetSearch()
@@ -68,7 +69,7 @@ extension RepoListScreen {
     struct StateDependentView: View {
         @EnvironmentObject var viewModel: RepoListViewModel
         let userName: String
-        
+
         var body: some View {
             switch viewModel.state {
             case .idle:
@@ -93,4 +94,3 @@ extension RepoListScreen {
         }
     }
 }
-

@@ -9,25 +9,25 @@ import Foundation
 import Combine
 
 final class RepoListViewModel: ObservableObject {
-    
+
     enum State: Comparable {
         case idle
         case loading
         case loadedAll
         case error(String)
     }
-    
+
     @Published var repos: [Repository] = []
     @Published var state: State = .idle {
         didSet {
             print("state is now \(state)")
         }
     }
-    
+
     private var apiService = ReposListService()
     private var storageService = PersistenceService()
     private var bag = Set<AnyCancellable>()
-    
+
     init() {
         state = .idle
     }
@@ -45,8 +45,7 @@ final class RepoListViewModel: ObservableObject {
                     .store(in: &bag)
                     finishedLoading()
                 }
-            }
-            catch let err {
+            } catch let err {
                 await MainActor.run { [weak self] in
                     self?.state = .error(">>Could not load repos –\(err.localizedDescription)")
                     print(err.localizedDescription)
@@ -65,7 +64,7 @@ final class RepoListViewModel: ObservableObject {
             state = .loadedAll
         }
     }
-    
+
     func resetSearch() {
         apiService.hasMoreRepos = true
         apiService.page = 1

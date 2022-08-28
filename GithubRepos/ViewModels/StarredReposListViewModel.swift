@@ -10,24 +10,22 @@ import Combine
 import CoreData
 
 class StarredReposListViewModel: ObservableObject {
-    
+
   let service = PersistenceService()
-    
+
     @Published var repos: [StarredRepoViewModel] = []
     @Published var searchText = ""
-    
+
     var bag = Set<AnyCancellable>()
-    
+
     func fetchRepos() {
         do {
             try   service.fetchStarredRepos()
-        }
-        catch let err as PersistenceService.PersistenceError {
+        } catch let err as PersistenceService.PersistenceError {
             print(err.message)
         } catch {
             print(error.localizedDescription)
         }
-      
         service.$repos
             .removeDuplicates()
             .sink { repos in
@@ -36,14 +34,14 @@ class StarredReposListViewModel: ObservableObject {
         .store(in: &bag)
         filterStarredRepos()
     }
-    
+
     func delete(_ repo: StarredRepoViewModel) {
         service.delete(repo)
         fetchRepos()
     }
 }
 
-extension StarredReposListViewModel{
+extension StarredReposListViewModel {
     func filterStarredRepos() {
         let searchTextFilteredReposPublisher: AnyPublisher<[StarredRepo], Never> = $searchText
             .combineLatest(service.$repos)

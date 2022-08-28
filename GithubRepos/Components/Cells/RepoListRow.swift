@@ -45,6 +45,9 @@ extension RepoListRow: View {
 
 struct RepoListRow_Previews: PreviewProvider {
     static var previews: some View {
-        RepoListRow(repoName: "Egy repó", userName: "TwoStraws", imageUrl: "https://avatars.githubusercontent.com/u/190200?v=4")
+        RepoListRow(
+            repoName: "Egy repó",
+            userName: "TwoStraws",
+            imageUrl: "https://avatars.githubusercontent.com/u/190200?v=4")
     }
 }
