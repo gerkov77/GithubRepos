@@ -12,7 +12,7 @@ import SwiftUI
 class PersistenceService: ObservableObject {
     
     @Published var repos: [StarredRepo] = []
-    
+    @Published var currentRepoIsStarred: Bool = false
     let manager = CoreDataManager.shared
     
     func fetchStarredRepos() {
@@ -44,14 +44,18 @@ class PersistenceService: ObservableObject {
         let context = manager.container.viewContext
         let request = StarredRepo.fetchRequest()
         request.fetchLimit =  1
-        let StringId = String(id)
-        request.predicate = NSPredicate(format: "serverId == %@", StringId)
+        let stringId = String(id)
+        request.predicate = NSPredicate(format: "serverId == %@", stringId)
         request.predicate = NSPredicate(format: "name == %@", name)
 
         do {
             let count = try context.count(for: request)
             if count > 0 {
                 print(">> Count for predicate: \(count)")
+                DispatchQueue.main.async {
+                    [weak self] in
+                    self?.currentRepoIsStarred = true
+                }
                 return true
             }else {
                 return false
@@ -76,7 +80,7 @@ class PersistenceService: ObservableObject {
         owner.login = repo.owner.login
         owner.avatarUrl = repo.owner.avatarUrl
         owner.addToRepos(stRepo)
-        stRepo.createdAt = dateFormatter.date(from: repo.createdAt) ?? Date()
+        stRepo.createdAt = dateFormatter.date(from: repo.createdAt) ?? Date.init(timeIntervalSince1970: 0)
         stRepo.language = repo.language
         stRepo.owner = owner
         stRepo.name = repo.name
@@ -107,6 +111,42 @@ class PersistenceService: ObservableObject {
             }
         }
     }
-    
-   
+}
+
+extension PersistenceService {
+    func remove(repo: Repository) {
+        let context = manager.container.viewContext
+        let request = StarredRepo.fetchRequest()
+        request.fetchLimit =  1
+        let stringId = String(repo.id)
+        request.predicate = NSPredicate(format: "serverId == %@", stringId)
+        request.predicate = NSPredicate(format: "name == %@", repo.name)
+        
+        let frc = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: manager.container.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        
+        guard let starred = self.repos.first(where: { starred in
+                        starred.serverId == String(repo.id) &&
+                        starred.name == repo.name
+                    }),
+            let index = frc.indexPath(forObject: starred) else { return }
+
+        
+     
+        let owner = Owner(context: context)
+        owner.removeFromRepos(starred)
+        context.delete(starred)
+//        let reposIndex = repos.firstIndex(of: starred)
+        repos.remove(at: index.item)
+        
+        do {
+            try context.save()
+        }
+        catch let err {
+            print(err.localizedDescription)
+        }
+    }
 }

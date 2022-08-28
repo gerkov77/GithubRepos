@@ -58,7 +58,7 @@ extension RepoDetailsViewModel {
         var date = Date()
         if let unWrappedRepo = repo {
             let dateString = unWrappedRepo.createdAt
-            date = dateFormatter.date(from: dateString) ?? Date()
+            date = dateFormatter.date(from: dateString) ?? Date.init(timeIntervalSince1970: 0)
         }
         return  dateFormatter.string(from: date)
     }
@@ -73,6 +73,7 @@ extension RepoDetailsViewModel {
                 try  persistenceService.save(repo: unwrappedRepo)
                 await MainActor.run { [weak self] in
                     self?.state = .idle
+                    checkRepoStarred()
                 }
             }
             catch let err as PersistenceService.PersistenceError {
@@ -80,6 +81,19 @@ extension RepoDetailsViewModel {
                 
             }
         }
+    }
+    
+    func removeFromStarredRepos() {
+       
+        state = .processing
+        guard let unwrappeRepo = repo else {
+            return
+        }
+        persistenceService.remove(repo: unwrappeRepo)
+        DispatchQueue.main.async { [weak self] in
+                self?.state = .idle
+                self?.isStarred = false
+            }
     }
 }
 
@@ -92,8 +106,15 @@ extension RepoDetailsViewModel {
         }
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.isStarred = self.persistenceService.checkIfItemExist(id: id, name: name)
-            
+            _ =    self.isStarred = self.persistenceService.checkIfItemExist(id: id, name: name)
+            self.persistenceService.$currentRepoIsStarred
+                .removeDuplicates()
+                .sink { result in
+                    withAnimation {
+                        self.isStarred = result
+                    }
+                }
+                .store(in: &self.bag)
         }
     }
 }

@@ -18,6 +18,9 @@ class StarredReposViewModel: ObservableObject {
         service.fetchStarredRepos()
         service.$repos.sink { repos in
             self.repos = repos
+            for repo in repos {
+                print("stored repo: \(repo.serverId), \(repo.name), \(repo.owner?.login), \(repo.owner?.avatarUrl)")
+            }
         }
         .store(in: &bag)
     }

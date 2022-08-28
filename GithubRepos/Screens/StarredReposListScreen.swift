@@ -9,22 +9,33 @@ import SwiftUI
 
 struct StarredReposListScreen {
     @StateObject var viewModel: StarredReposViewModel = StarredReposViewModel()
+    @State var shouldShowDetailScreen: Bool = false
+    @State var selectedRepo: StarredRepo?
 }
 
 extension StarredReposListScreen: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
+            List {
                 VStack(spacing: 1) {
                     if let repos = viewModel.repos {
                         
                         ForEach(repos, id: \.id) { repo in
+                            
                             RepoListRow(
                                 repoName: repo.name,
                                 userName: repo.owner?.login ?? "",
                                 imageUrl: repo.owner?.avatarUrl ?? ""
                             )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                shouldShowDetailScreen = true
+                                selectedRepo =  repo
+                            }
+                            .sheet(isPresented: $shouldShowDetailScreen) {
+                                RepoDetailsScreen(name: selectedRepo?.name ?? "", user: (selectedRepo?.owner?.login) ?? "")
+                            }
                         }
                     }
                 }

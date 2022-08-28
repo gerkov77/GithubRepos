@@ -45,7 +45,7 @@ extension RepoListScreen: View {
                                     selectedRepo =  repo
                                 }
                                 .sheet(isPresented: $shouldShowDetailScreen) {
-                                    RepoDetailsScreen(name: selectedRepo?.name ?? "", user: (selectedRepo?.owner.login) ?? "")
+                                    RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
                                 }
                             }
                         }

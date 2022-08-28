@@ -28,6 +28,8 @@ extension RepoDetailsScreen: View {
                 Spacer()
                 
                 StarButton(action: {
+                    viewModel.isStarred ?
+                    viewModel.removeFromStarredRepos() :
                     viewModel.saveToStarredRepos()
                 }, starred: viewModel.isStarred)
                 .padding(.bottom, 100)
@@ -80,7 +82,7 @@ struct ProfileSection: View {
     @EnvironmentObject var viewModel: RepoDetailsViewModel
     
     var body: some View {
-        AsyncImage(url: URL(string: viewModel.repo?.owner.avatarUrl ?? "")) { image in
+        AsyncImage(url: URL(string: (viewModel.repo?.owner.avatarUrl) ?? "")) { image in
             image
                 .resizable()
                 .frame(width: 120, height: 120)
@@ -106,8 +108,8 @@ struct ProfileSection: View {
 }
 
 struct StarButton {
-    let action: () -> Void
     
+    let action: () -> Void
     let starred: Bool
     
     init(action: @escaping () -> Void,
