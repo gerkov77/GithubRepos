@@ -56,11 +56,16 @@ class RepoDetailsViewModel: ObservableObject {
 extension RepoDetailsViewModel {
     var formattedDate: String  {
         var date = Date()
+        let formatter = DateFormatter()
+        
         if let unWrappedRepo = repo {
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            formatter.locale = Calendar.current.locale
             let dateString = unWrappedRepo.createdAt
-            date = dateFormatter.date(from: dateString) ?? Date.init(timeIntervalSince1970: 0)
+            date = formatter.date(from: dateString) ?? Date.init(timeIntervalSince1970:  0)
+            formatter.dateStyle = .medium
         }
-        return  dateFormatter.string(from: date)
+        return  formatter.string(from: date)
     }
 }
 

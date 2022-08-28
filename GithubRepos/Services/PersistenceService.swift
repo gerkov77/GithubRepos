@@ -80,7 +80,7 @@ class PersistenceService: ObservableObject {
         owner.login = repo.owner.login
         owner.avatarUrl = repo.owner.avatarUrl
         owner.addToRepos(stRepo)
-        stRepo.createdAt = dateFormatter.date(from: repo.createdAt) ?? Date.init(timeIntervalSince1970: 0)
+        stRepo.createdAt = createDate(from: repo.createdAt)
         stRepo.language = repo.language
         stRepo.owner = owner
         stRepo.name = repo.name
@@ -92,10 +92,6 @@ class PersistenceService: ObservableObject {
         } catch let err {
             print(err.localizedDescription)
         }
-    }
-    
-    func fetchPreviewRepos() {
-        
     }
     
     enum PersistenceError: Error {
@@ -121,10 +117,10 @@ extension PersistenceService {
         let stringId = String(repo.id)
         request.predicate = NSPredicate(format: "serverId == %@", stringId)
         request.predicate = NSPredicate(format: "name == %@", repo.name)
-        
+        request.sortDescriptors = [.init(key: "createdAt", ascending: false)]
         let frc = NSFetchedResultsController(
             fetchRequest: request,
-            managedObjectContext: manager.container.viewContext,
+            managedObjectContext: context,
             sectionNameKeyPath: nil,
             cacheName: nil)
         
@@ -149,4 +145,16 @@ extension PersistenceService {
             print(err.localizedDescription)
         }
     }
+}
+
+extension PersistenceService {
+    func createDate(from string: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        formatter.locale = Calendar.current.locale
+     
+        let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
+       return date
+    }
+    
 }
