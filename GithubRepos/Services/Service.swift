@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RepoServiceProtocol {
-    
+
     func fetchRepos(for user: String) async throws
     func update()
     func remove()

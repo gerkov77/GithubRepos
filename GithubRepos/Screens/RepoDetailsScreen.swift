@@ -15,19 +15,19 @@ struct RepoDetailsScreen {
 }
 
 extension RepoDetailsScreen: View {
-    
+
     var body: some View {
         NavigationView {
             VStack {
                 ProfileSection()
                     .padding(.bottom, 40)
                     .environmentObject(viewModel)
-                
+
                 InfoSection()
                     .environmentObject(viewModel)
-                
+
                 Spacer()
-                
+
                 StarButton(action: {
                     if !viewModel.isStarred {
                         viewModel.addRepo()
@@ -62,21 +62,21 @@ struct RepoDetaislScreen_Previews: PreviewProvider {
 struct InfoSection: View {
 
     @EnvironmentObject var viewModel: RepoDetailsViewModel
-    
+
     var body: some View {
         HStack {
             Text( "Language:")
                 .font(Appfonts.medium(size: 17).font)
-            
+
             Text((viewModel.repo?.language) ?? "could not fetch language")
                 .font(Appfonts.medium(size: 17).font)
         }
         .padding(4)
-        
+
         HStack {
             Text("Created at: ")
                 .font(Appfonts.medium(size: 17).font)
-            
+
             Text(viewModel.formattedDate)
                 .font(Appfonts.medium(size: 17).font)
         }
@@ -90,7 +90,7 @@ struct InfoSection: View {
 
 struct ProfileSection: View {
     @EnvironmentObject var viewModel: RepoDetailsViewModel
-    
+
     var body: some View {
         AsyncImage(url: URL(string: (viewModel.repo?.owner.avatarUrl) ?? "")) { image in
             image
@@ -105,12 +105,11 @@ struct ProfileSection: View {
                 .padding()
         }
         .padding(.top, 40)
-        
-        
+
         HStack {
             Text("Created by: ")
                 .font(Appfonts.medium(size: 17).font)
-            
+
             Text(viewModel.repo?.owner.login ?? "")
                 .font(Appfonts.bold(size: 17).font)
         }
@@ -118,10 +117,10 @@ struct ProfileSection: View {
 }
 
 struct StarButton {
-    
+
     let action: () -> Void
     let starred: Bool
-    
+
     init(action: @escaping () -> Void,
          starred: Bool) {
         self.action = action
@@ -132,24 +131,23 @@ struct StarButton {
 extension StarButton: View {
     var body: some View {
         Button {
-            
+
             action()
         } label: {
             if starred {
                 VStack {
                     Image(systemName: "star.fill")
                         .foregroundColor(.orange)
-                    
+
                     Text("Starred")
                         .foregroundColor(.orange)
                 }
-                
-            }
-            else {
+
+            } else {
                 VStack {
                     Image(systemName: "star")
                         .foregroundColor(.orange)
-                    
+
                     Text("Add")
                         .foregroundColor(.orange)
                 }

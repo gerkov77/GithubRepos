@@ -8,15 +8,14 @@
 import Foundation
 
 struct Repository: Identifiable, Codable {
-  
+
     let id: Int
     let name: String
     let owner: User
     let description: String?
     let createdAt: String
     let language: String?
-    
-   
+
 }
 
 extension Repository: Equatable {

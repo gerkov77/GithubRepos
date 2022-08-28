@@ -16,7 +16,6 @@ struct ButtonComponent {
     }
 }
 
-
 extension ButtonComponent: View {
     var body: some View {
         Button {

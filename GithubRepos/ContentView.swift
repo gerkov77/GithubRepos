@@ -14,7 +14,7 @@ struct ContentView: View {
                 .tabItem {
                     Label("Search", systemImage: "magnifyingglass")
                 }
-            
+
             StarredReposListScreen()
                 .tabItem {
                     Label("Starred", systemImage: "star")

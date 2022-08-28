@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct RepoListScreen {
-    
+
     @StateObject var viewModel = RepoListViewModel()
     @State var shouldShowDetailScreen: Bool = false
     @State var selectedRepo: Repository?
     var userName: String
-    
+
     init(userName: String) {
         self.userName = userName
     }
@@ -22,7 +22,7 @@ struct RepoListScreen {
 extension RepoListScreen: View {
 
     var body: some View {
-        
+
         Group {
             if viewModel.repos.isEmpty {
                 EmptyStateView()

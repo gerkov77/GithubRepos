@@ -8,7 +8,6 @@
 import UIKit
 import SwiftUI
 
-
 typealias Appfonts = GHR.Appearance.Font
 
 enum GHR {
@@ -24,9 +23,9 @@ extension GHR.Appearance {
         case regular(size: CGFloat)
         case medium(size: CGFloat)
         case bold(size: CGFloat)
-        
+
         var font: SwiftUI.Font {
-            
+
             switch self {
             case let .light(size: size):
                 return SwiftUI.Font.custom("Helvetica Neue Light", size: size)

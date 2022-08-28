@@ -8,9 +8,8 @@
 import Foundation
 import CoreData
 
-
 struct CoreDataManager {
-    
+
     static let shared = CoreDataManager()
 
     static var preview: CoreDataManager = {
@@ -33,14 +32,14 @@ struct CoreDataManager {
     }()
 
     let container: NSPersistentContainer
-    
+
     var viewContext: NSManagedObjectContext {
         return container.viewContext
     }
-    
+
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "GithubReposModels")
-        
+
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
@@ -68,7 +67,7 @@ struct CoreDataManager {
         viewContext.delete(repo)
         saveContext()
     }
-    
+
     func getRepoById(_ id: NSManagedObjectID) -> StarredRepo? {
         do {
             return try viewContext.existingObject(with: id) as? StarredRepo
@@ -76,7 +75,7 @@ struct CoreDataManager {
             return nil
         }
     }
-    
+
     func saveContext() {
         if viewContext.hasChanges {
             do {

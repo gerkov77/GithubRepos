@@ -21,7 +21,7 @@ extension Endpoint {
             URLQueryItem(name: "per_page", value: "10")
             ])
     }
-    
+
     static func getRepo(user: String, repo: String) -> Endpoint {
         return Endpoint(
             path: "/repos/\(user)/\(repo)", queryItems: [])
@@ -35,7 +35,7 @@ extension Endpoint {
         components.host = "api.github.com"
         components.path = path
         components.queryItems = queryItems
-        
+
         return components.url
     }
 }

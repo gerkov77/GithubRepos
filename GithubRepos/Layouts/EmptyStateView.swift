@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-
 struct EmptyStateView: View {
-    
+
     var body: some View {
         VStack {
             Image("empty-state-logo")

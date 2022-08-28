@@ -12,11 +12,11 @@ protocol APIManagerProtocol {
 }
 
 struct APIManager: APIManagerProtocol {
-    
+
     static let shared  = APIManager()
-   
+
     private init() {}
-   
+
     enum GitHubApiError: Error {
         case invaludUrl
         case invalidData
@@ -29,9 +29,9 @@ extension APIManager {
         guard let url: URL =  endpoint.url else {
             throw GitHubApiError.invaludUrl
         }
-        
+
         let (data, response) = try await URLSession.shared.data(from: url)
-        
+
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw GitHubApiError.unableToComplete
         }
@@ -39,7 +39,7 @@ extension APIManager {
         print(">>data: \(data)")
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
+
         let reposResult = try decoder.decode(Array<Repository>.self, from: data)
         print(reposResult)
         return reposResult
@@ -51,9 +51,9 @@ extension APIManager {
         guard let url: URL =  endpoint.url else {
             throw GitHubApiError.invaludUrl
         }
-        
+
         let (data, response) = try await URLSession.shared.data(from: url)
-        
+
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw GitHubApiError.unableToComplete
         }

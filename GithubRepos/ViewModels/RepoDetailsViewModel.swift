@@ -83,7 +83,7 @@ extension RepoDetailsViewModel {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let checkResult = self.persistenceService.checkIfItemExist(id: id, name: name)
-            
+
             withAnimation {
                 self.isStarred = checkResult
             }
@@ -95,7 +95,7 @@ extension RepoDetailsViewModel {
     var formattedDate: String {
         var date = Date()
         let formatter = DateFormatter()
-        
+
         if let unWrappedRepo = repo {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
             formatter.locale = Calendar.current.locale

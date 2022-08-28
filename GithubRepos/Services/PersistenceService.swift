@@ -11,12 +11,12 @@ import SwiftUI
 import Combine
 
 class PersistenceService: NSObject,  ObservableObject {
-    
+
     @Published var repos: [StarredRepo] = []
-    
+
     let manager = CoreDataManager.shared
     var bag = Set<AnyCancellable>()
-    
+
     func fetchStarredRepos() throws {
         let request = StarredRepo.fetchRequest()
         request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
@@ -31,12 +31,12 @@ class PersistenceService: NSObject,  ObservableObject {
                 self.repos = repos
             }
             .store(in: &self.bag)
-        } catch let err as PersistenceService.PersistenceError{
+        } catch let err as PersistenceService.PersistenceError {
             print(err.message)
             throw PersistenceError.itemNotFound
         }
     }
-    
+
     func checkIfItemExist(id: Int, name: String) -> Bool {
         let context = manager.viewContext
         let request: NSFetchRequest<StarredRepo> = StarredRepo.fetchRequest()
@@ -45,14 +45,14 @@ class PersistenceService: NSObject,  ObservableObject {
         let stringId = String(id)
         request.predicate = NSPredicate(format: "serverId == %@", stringId)
         request.predicate = NSPredicate(format: "name == %@", name)
-        
+
         do {
             let count = try context.count(for: request)
             if count > 0 {
                 print(">> Count for predicate: \(count)")
-                
+
                 return true
-            }else {
+            } else {
                 return false
             }
         } catch let error as NSError {
@@ -60,7 +60,7 @@ class PersistenceService: NSObject,  ObservableObject {
             return false
         }
     }
-    
+
     func save(repo: Repository) throws {
         guard checkIfItemExist(id: repo.id, name: repo.name) == false else {
             throw PersistenceError.itemAlreadySaved
@@ -78,7 +78,7 @@ class PersistenceService: NSObject,  ObservableObject {
         stRepo.name = repo.name
         stRepo.info = repo.description
         stRepo.serverId = String(repo.id)
-        
+
         manager.saveContext()
     }
 
@@ -87,7 +87,7 @@ class PersistenceService: NSObject,  ObservableObject {
         case savingError
         case deleteError
         case itemNotFound
-        
+
         var message: String {
             switch self {
             case .itemAlreadySaved:

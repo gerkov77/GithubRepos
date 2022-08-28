@@ -14,7 +14,7 @@ struct RepoListRow {
 }
 
 extension RepoListRow: View {
-    
+
     var body: some View {
         HStack {
             AsyncImage(url: URL(string: imageUrl), scale: 1) { image in

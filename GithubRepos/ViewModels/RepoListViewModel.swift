@@ -31,7 +31,7 @@ final class RepoListViewModel: ObservableObject {
     init() {
         state = .idle
     }
-    
+
     func fetchRepos(userName: String) {
         guard state == .idle else { return }
         state = .loading
@@ -53,7 +53,7 @@ final class RepoListViewModel: ObservableObject {
             }
         }
     }
-    
+
     @MainActor
     func finishedLoading() {
         if apiService.hasMoreRepos {
