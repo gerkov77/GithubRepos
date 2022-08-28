@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import SwiftUI
+import Combine
 
 class PersistenceService: ObservableObject {
     
@@ -15,9 +16,11 @@ class PersistenceService: ObservableObject {
     @Published var currentRepoIsStarred: Bool = false
     let manager = CoreDataManager.shared
     
+    var bag = Set<AnyCancellable>()
+    
     func fetchStarredRepos() {
         let request = StarredRepo.fetchRequest()
-        request.sortDescriptors = [.init(key: "createdAt", ascending: false)]
+            request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
         let frc = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: manager.container.viewContext,
@@ -26,12 +29,12 @@ class PersistenceService: ObservableObject {
         do {
             try frc.performFetch()
             
-            DispatchQueue.main.async {
-                [weak self] in
-                if let fetchedRepos =  frc.fetchedObjects {
-                    self?.repos = fetchedRepos
+                 frc.fetchedObjects.publisher.sink { repos in
+                    self.repos = repos
                 }
-            }
+                 .store(in: &self.bag)
+            
+        
         }
         
         catch let err {
@@ -112,23 +115,14 @@ class PersistenceService: ObservableObject {
 extension PersistenceService {
     func remove(repo: Repository) {
         let context = manager.container.viewContext
-        let request = StarredRepo.fetchRequest()
-        request.fetchLimit =  1
-        let stringId = String(repo.id)
-        request.predicate = NSPredicate(format: "serverId == %@", stringId)
-        request.predicate = NSPredicate(format: "name == %@", repo.name)
-        request.sortDescriptors = [.init(key: "createdAt", ascending: false)]
-        let frc = NSFetchedResultsController(
-            fetchRequest: request,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
         
+     fetchStarredRepos()
+        print(">>repos in remove: \(repos)")
         guard let starred = self.repos.first(where: { starred in
                         starred.serverId == String(repo.id) &&
                         starred.name == repo.name
-                    }),
-            let index = frc.indexPath(forObject: starred) else { return }
+        }) else { return }
+        guard let index = repos.firstIndex(of: starred) else { return}
 
         
      
@@ -136,7 +130,10 @@ extension PersistenceService {
         owner.removeFromRepos(starred)
         context.delete(starred)
 //        let reposIndex = repos.firstIndex(of: starred)
-        repos.remove(at: index.item)
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.repos.remove(at: index)
+        }
         
         do {
             try context.save()
