@@ -41,7 +41,9 @@ class RepoDetailsViewModel: ObservableObject {
             do {
                 try await apiService.fetchRepo(user: user, repo: name)
                 await MainActor.run { [weak self] in
-                    apiService.$repo.sink { repo in
+                    apiService.$repo
+                        .removeDuplicates()
+                        .sink { repo in
                         self?.repo = repo
                         self?.checkExists()
                     }
@@ -86,15 +88,11 @@ extension RepoDetailsViewModel {
         }
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            _ =    self.isStarred = self.persistenceService.checkIfItemExist(id: id, name: name)
-            self.persistenceService.$currentRepoIsStarred
-                .removeDuplicates()
-                .sink { result in
-                    withAnimation {
-                        self.isStarred = result
-                    }
-                }
-                .store(in: &self.bag)
+            let checkResult = self.persistenceService.checkIfItemExist(id: id, name: name)
+            
+            withAnimation {
+                self.isStarred = checkResult
+            }
         }
     }
 }

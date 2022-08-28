@@ -16,7 +16,15 @@ class StarredReposListViewModel: ObservableObject {
     var bag = Set<AnyCancellable>()
     
     func fetchRepos() {
-        service.fetchStarredRepos()
+        do {
+            try   service.fetchStarredRepos()
+        }
+        catch let err as PersistenceService.PersistenceError {
+            print(err.message)
+        } catch {
+            print(error.localizedDescription)
+        }
+      
         service.$repos
             .removeDuplicates()
             .sink { repos in

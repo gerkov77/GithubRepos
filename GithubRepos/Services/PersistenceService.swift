@@ -13,17 +13,16 @@ import Combine
 class PersistenceService: NSObject,  ObservableObject {
     
     @Published var repos: [StarredRepo] = []
-    @Published var currentRepoIsStarred: Bool = false
+
     let manager = CoreDataManager.shared
-    
     var bag = Set<AnyCancellable>()
     
-    func fetchStarredRepos() {
+    func fetchStarredRepos() throws {
         let request = StarredRepo.fetchRequest()
             request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
         let frc = NSFetchedResultsController(
             fetchRequest: request,
-            managedObjectContext: manager.container.viewContext,
+            managedObjectContext: manager.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         do {
@@ -32,8 +31,9 @@ class PersistenceService: NSObject,  ObservableObject {
                 self.repos = repos
             }
             .store(in: &self.bag)
-        } catch let err {
-            print(err.localizedDescription)
+        } catch let err as PersistenceService.PersistenceError{
+            print(err.message)
+            throw PersistenceError.itemNotFound
         }
     }
     
@@ -51,11 +51,7 @@ class PersistenceService: NSObject,  ObservableObject {
             let count = try context.count(for: request)
             if count > 0 {
                 print(">> Count for predicate: \(count)")
-                DispatchQueue.main.async {
-                    [weak self] in
-                    //TODO: move this to viewModel!
-                    self?.currentRepoIsStarred = true
-                }
+
                 return true
             }else {
                 return false
@@ -68,14 +64,11 @@ class PersistenceService: NSObject,  ObservableObject {
     
     func save(repo: Repository) throws {
         guard checkIfItemExist(id: repo.id, name: repo.name) == false else {
-            print(">>Already starred!")
-            
             throw PersistenceError.itemAlreadySaved
         }
         
         let context = manager.container.viewContext
         let stRepo = StarredRepo(context: context)
-        
         let owner = Owner(context: context)
         owner.login = repo.owner.login
         owner.avatarUrl = repo.owner.avatarUrl
@@ -113,7 +106,6 @@ class PersistenceService: NSObject,  ObservableObject {
 
 extension PersistenceService {
     
-    
     func delete(_ repo: StarredRepoViewModel) {
         
         guard let existingRepo = manager.getRepoById(repo.id) else {
@@ -121,29 +113,6 @@ extension PersistenceService {
         }
         manager.deleteRepo(existingRepo)
     }
-//    func remove(repo: Repository) throws {
-//        let context = manager.container.viewContext
-//
-//        fetchStarredRepos()
-//        print(">>repos in remove: \(repos)")
-//        guard let starred = self.repos.first(where: { starred in
-//            starred.serverId == String(repo.id) &&
-//            starred.name == repo.name
-//        }) else { throw PersistenceError.itemNotFound }
-//        guard let index = repos.firstIndex(of: starred) else { return}
-//
-//
-//
-//        let owner = Owner(context: context)
-//        owner.removeFromRepos(starred)
-//        context.delete(starred)
-//        //        let reposIndex = repos.firstIndex(of: starred)
-//        DispatchQueue.main.async {
-//            [weak self] in
-//            self?.repos.remove(at: index)
-//        }
-//        manager.saveContext()
-//    }
 }
 
 extension PersistenceService {
@@ -155,17 +124,4 @@ extension PersistenceService {
         let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
         return date
     }
-    
 }
-
-extension PersistenceService {
-    
-}
-
-//
-//extension PersistenceService:  NSFetchedResultsControllerDelegate {
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        objectWillChange.send()
-//        try! controller.performFetch()
-//    }
-//}
