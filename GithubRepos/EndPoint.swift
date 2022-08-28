@@ -7,9 +7,6 @@
 
 import Foundation
 
-let token = "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"
-
-
 struct Endpoint {
     let path: String
     let queryItems: [URLQueryItem]

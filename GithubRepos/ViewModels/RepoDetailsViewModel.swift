@@ -119,9 +119,3 @@ extension RepoDetailsViewModel {
     }
 }
 
-let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.locale = Calendar.current.locale
-    return  formatter
-}()
