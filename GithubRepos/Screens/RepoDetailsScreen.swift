@@ -11,6 +11,7 @@ struct RepoDetailsScreen {
     let name: String
     let user: String
     @StateObject var viewModel: RepoDetailsViewModel = RepoDetailsViewModel()
+    @State var shouldShowAlert: Bool = false
 }
 
 extension RepoDetailsScreen: View {
@@ -31,11 +32,21 @@ extension RepoDetailsScreen: View {
                     if !viewModel.isStarred {
                         viewModel.addRepo()
                     }
+                    else {
+                      shouldShowAlert = true
+                    }
                     
                 }, starred: viewModel.isStarred)
+                .clipShape(Rectangle())
                 .padding(.bottom, 100)
                 .navigationTitle(Text(name))
                 .navigationBarTitleDisplayMode(.large)
+                .alert(isPresented: $shouldShowAlert) {
+                    Alert(
+                        title: Text("This repo is already saved"),
+                        message: Text("You must really like it 🤩"),
+                        dismissButton: .cancel(Text("Ok")))
+                }
             }
         }
         .onAppear {

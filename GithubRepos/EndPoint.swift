@@ -13,16 +13,7 @@ struct Endpoint {
 }
 
 extension Endpoint {
-//    static func search(matching query: String,
-//                       sortedBy sorting: Sorting = .recency) -> Endpoint {
-//        return Endpoint(
-//            path: "/search/repositories",
-//            queryItems: [
-//                URLQueryItem(name: "q", value: query),
-//                URLQueryItem(name: "sort", value: sorting.rawValue)
-//            ]
-//        )
-//    }
+
     static func getRepos(for user: String, page: Int) -> Endpoint {
         return Endpoint(
             path: "/users/\(user)/repos", queryItems: [

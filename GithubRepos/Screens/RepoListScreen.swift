@@ -31,28 +31,31 @@ extension RepoListScreen: View {
                 EmptyStateView()
             }
             else {
-                List(viewModel.repos,id: \.id, selection: $selectedRepo) { repo in
+               
+                    List(selection: $selectedRepo) {
+                        ForEach(viewModel.repos,id: \.id) { repo in
+                            RepoListRow(
+                                repoName: repo.name,
+                                userName: repo.owner.login,
+                                imageUrl: repo.owner.avatarUrl
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                shouldShowDetailScreen = true
+                                selectedRepo =  repo
+                            }
+                        }
                         
-                                RepoListRow(
-                                    repoName: repo.name,
-                                    userName: repo.owner.login,
-                                    imageUrl: repo.owner.avatarUrl
-                                )
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    shouldShowDetailScreen = true
-                                    selectedRepo =  repo
-                                }
-                                .sheet(isPresented: $shouldShowDetailScreen) {
-                                    RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
-                                }
-                    
+                            .sheet(isPresented: $shouldShowDetailScreen) {
+                                RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
+                            }
+                            .onDisappear {
+                                viewModel.resetSearch()
+                            }
                         StateDependentView(userName: userName)
                             .environmentObject(viewModel)
-                    }
-                .onDisappear {
-                    viewModel.resetSearch()
-                }
+                            
+                        }
             }
         }
         .onAppear {
@@ -78,6 +81,7 @@ extension RepoListScreen {
             case .idle:
                 Color.red
                     .frame(width: 0,height: 0)
+                    .offset(y: 100)
                     .onAppear {
                         viewModel.fetchRepos(userName: userName)
                         print("load more")
@@ -85,6 +89,8 @@ extension RepoListScreen {
             case .loading:
                 ProgressView()
                     .progressViewStyle(.circular)
+                    .frame( height: 100, alignment: .center)
+                    .foregroundColor(Color.red)
             case .loadedAll:
                 EmptyView()
             case .error(let error):

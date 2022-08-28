@@ -26,7 +26,6 @@ class RepoDetailsViewModel: ObservableObject {
             print(">> did set is starred: \(isStarred)")
         }
     }
-    
 
     var bag = Set<AnyCancellable>()
     
