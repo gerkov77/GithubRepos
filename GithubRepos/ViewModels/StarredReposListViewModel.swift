@@ -10,8 +10,11 @@ import Combine
 import CoreData
 
 class StarredReposListViewModel: ObservableObject {
+    
   let service = PersistenceService()
+    
     @Published var repos: [StarredRepoViewModel] = []
+    @Published var searchText = ""
     
     var bag = Set<AnyCancellable>()
     
@@ -31,10 +34,33 @@ class StarredReposListViewModel: ObservableObject {
                 self.repos = repos.map(StarredRepoViewModel.init)
         }
         .store(in: &bag)
+        filterStarredRepos()
     }
     
     func delete(_ repo: StarredRepoViewModel) {
         service.delete(repo)
         fetchRepos()
+    }
+}
+
+extension StarredReposListViewModel{
+    func filterStarredRepos() {
+        let searchTextFilteredReposPublisher: AnyPublisher<[StarredRepo], Never> = $searchText
+            .combineLatest(service.$repos)
+            .receive(on: DispatchQueue.main)
+            .map { (text, repos) -> [StarredRepo] in
+                guard !text.isEmpty else { return repos}
+                let lowerText = text.lowercased()
+                let filteredProds = repos.filter {
+                    return $0.name.lowercased().contains(lowerText)
+                }
+                print(">> filtered products : \(filteredProds)")
+                return filteredProds
+            }
+            .eraseToAnyPublisher()
+        searchTextFilteredReposPublisher.sink { [weak self] repos in
+            self?.repos = repos.map(StarredRepoViewModel.init)
+        }
+        .store(in: &bag)
     }
 }

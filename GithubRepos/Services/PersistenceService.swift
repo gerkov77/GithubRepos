@@ -13,13 +13,13 @@ import Combine
 class PersistenceService: NSObject,  ObservableObject {
     
     @Published var repos: [StarredRepo] = []
-
+    
     let manager = CoreDataManager.shared
     var bag = Set<AnyCancellable>()
     
     func fetchStarredRepos() throws {
         let request = StarredRepo.fetchRequest()
-            request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
+        request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
         let frc = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: manager.viewContext,
@@ -38,7 +38,6 @@ class PersistenceService: NSObject,  ObservableObject {
     }
     
     func checkIfItemExist(id: Int, name: String) -> Bool {
-        
         let context = manager.viewContext
         let request: NSFetchRequest<StarredRepo> = StarredRepo.fetchRequest()
         request.sortDescriptors =  [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
@@ -46,12 +45,12 @@ class PersistenceService: NSObject,  ObservableObject {
         let stringId = String(id)
         request.predicate = NSPredicate(format: "serverId == %@", stringId)
         request.predicate = NSPredicate(format: "name == %@", name)
-       
+        
         do {
             let count = try context.count(for: request)
             if count > 0 {
                 print(">> Count for predicate: \(count)")
-
+                
                 return true
             }else {
                 return false
@@ -105,7 +104,6 @@ class PersistenceService: NSObject,  ObservableObject {
 }
 
 extension PersistenceService {
-    
     func delete(_ repo: StarredRepoViewModel) {
         
         guard let existingRepo = manager.getRepoById(repo.id) else {

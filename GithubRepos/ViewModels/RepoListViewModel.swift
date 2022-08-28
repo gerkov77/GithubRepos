@@ -50,7 +50,7 @@ final class RepoListViewModel: ObservableObject {
                 await MainActor.run { [weak self] in
                     self?.state = .error(">>Could not load repos –\(err.localizedDescription)")
                     print(err.localizedDescription)
-                    }
+                }
             }
         }
     }

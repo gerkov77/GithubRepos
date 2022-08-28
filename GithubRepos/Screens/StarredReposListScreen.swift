@@ -11,13 +11,13 @@ struct StarredReposListScreen {
     @StateObject var viewModel: StarredReposListViewModel = StarredReposListViewModel()
     @State var shouldShowDetailScreen: Bool = false
     @State var selectedRepo: StarredRepoViewModel?
+    
     func deleteRepo(offsets: IndexSet) {
         offsets.forEach { index in
             let repo = viewModel.repos[index]
             viewModel.delete(repo)
         }
     }
-    
 }
 
 extension StarredReposListScreen: View {
@@ -42,6 +42,7 @@ extension StarredReposListScreen: View {
                 }
                 .onDelete(perform:  deleteRepo)
             }
+            .searchable(text: $viewModel.searchText)
             .navigationTitle("Starred repos")
             .onAppear {
                 viewModel.fetchRepos()

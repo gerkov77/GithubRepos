@@ -28,10 +28,6 @@
 		4D7C55AC28B8F9080088FD0D /* RepoDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55AB28B8F9080088FD0D /* RepoDetailsScreen.swift */; };
 		4D7C55AE28B923390088FD0D /* RepoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55AD28B923390088FD0D /* RepoDetailsViewModel.swift */; };
 		4D7C55B128B956440088FD0D /* GithubReposModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55AF28B956440088FD0D /* GithubReposModels.xcdatamodeld */; };
-		4D7C55D528B963660088FD0D /* StarredRepo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55D128B963660088FD0D /* StarredRepo+CoreDataClass.swift */; };
-		4D7C55D628B963660088FD0D /* StarredRepo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55D228B963660088FD0D /* StarredRepo+CoreDataProperties.swift */; };
-		4D7C55DB28B964520088FD0D /* Owner+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55D928B964520088FD0D /* Owner+CoreDataClass.swift */; };
-		4D7C55DC28B964520088FD0D /* Owner+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55DA28B964520088FD0D /* Owner+CoreDataProperties.swift */; };
 		4D7C55DE28B964FA0088FD0D /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55DD28B964FA0088FD0D /* PersistenceService.swift */; };
 		4D7C55E028B978280088FD0D /* StarredReposListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D7C55DF28B978280088FD0D /* StarredReposListViewModel.swift */; };
 		4DE627C828B628B300FB333F /* RepoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627C728B628B300FB333F /* RepoListViewModel.swift */; };
@@ -41,6 +37,10 @@
 		4DE627D228B6B6F300FB333F /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627D128B6B6F300FB333F /* Appearance.swift */; };
 		4DE627D428B6BB8400FB333F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627D328B6BB8400FB333F /* User.swift */; };
 		4DEDBCB728BBC22700F8001A /* StarredRepoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */; };
+		4DEDBCBB28BBE63100F8001A /* StarredRepo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCBA28BBE63100F8001A /* StarredRepo+CoreDataClass.swift */; };
+		4DEDBCBD28BBE64000F8001A /* StarredRepo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCBC28BBE64000F8001A /* StarredRepo+CoreDataProperties.swift */; };
+		4DEDBCBF28BBE64900F8001A /* Owner+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCBE28BBE64900F8001A /* Owner+CoreDataClass.swift */; };
+		4DEDBCC128BBE65000F8001A /* Owner+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCC028BBE65000F8001A /* Owner+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,10 +85,6 @@
 		4D7C55AB28B8F9080088FD0D /* RepoDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoDetailsScreen.swift; sourceTree = "<group>"; };
 		4D7C55AD28B923390088FD0D /* RepoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoDetailsViewModel.swift; sourceTree = "<group>"; };
 		4D7C55B028B956440088FD0D /* GithubReposModels.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GithubReposModels.xcdatamodel; sourceTree = "<group>"; };
-		4D7C55D128B963660088FD0D /* StarredRepo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StarredRepo+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4D7C55D228B963660088FD0D /* StarredRepo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StarredRepo+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
-		4D7C55D928B964520088FD0D /* Owner+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Owner+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		4D7C55DA28B964520088FD0D /* Owner+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Owner+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		4D7C55DD28B964FA0088FD0D /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
 		4D7C55DF28B978280088FD0D /* StarredReposListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredReposListViewModel.swift; sourceTree = "<group>"; };
 		4DE627C728B628B300FB333F /* RepoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListViewModel.swift; sourceTree = "<group>"; };
@@ -98,6 +94,10 @@
 		4DE627D128B6B6F300FB333F /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		4DE627D328B6BB8400FB333F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepoViewModel.swift; sourceTree = "<group>"; };
+		4DEDBCBA28BBE63100F8001A /* StarredRepo+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "StarredRepo+CoreDataClass.swift"; path = "GithubRepos/CoreData Subclasses/StarredRepo+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4DEDBCBC28BBE64000F8001A /* StarredRepo+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "StarredRepo+CoreDataProperties.swift"; path = "GithubRepos/CoreData Subclasses/StarredRepo+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		4DEDBCBE28BBE64900F8001A /* Owner+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Owner+CoreDataClass.swift"; path = "GithubRepos/CoreData Subclasses/Owner+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		4DEDBCC028BBE65000F8001A /* Owner+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Owner+CoreDataProperties.swift"; path = "GithubRepos/CoreData Subclasses/Owner+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,11 +148,8 @@
 		4D11222B28B40F79005A706B /* GithubRepos */ = {
 			isa = PBXGroup;
 			children = (
-				4D7C55D928B964520088FD0D /* Owner+CoreDataClass.swift */,
-				4D7C55DA28B964520088FD0D /* Owner+CoreDataProperties.swift */,
-				4D7C55D128B963660088FD0D /* StarredRepo+CoreDataClass.swift */,
-				4D7C55D228B963660088FD0D /* StarredRepo+CoreDataProperties.swift */,
 				4D11222C28B40F79005A706B /* GithubReposApp.swift */,
+				4DEDBCB928BBE5C800F8001A /* CoreDataSubclasses */,
 				4DE627D128B6B6F300FB333F /* Appearance.swift */,
 				4D11222E28B40F79005A706B /* ContentView.swift */,
 				4DE627CD28B644AC00FB333F /* EndPoint.swift */,
@@ -270,6 +267,17 @@
 				4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		4DEDBCB928BBE5C800F8001A /* CoreDataSubclasses */ = {
+			isa = PBXGroup;
+			children = (
+				4DEDBCBA28BBE63100F8001A /* StarredRepo+CoreDataClass.swift */,
+				4DEDBCBC28BBE64000F8001A /* StarredRepo+CoreDataProperties.swift */,
+				4DEDBCBE28BBE64900F8001A /* Owner+CoreDataClass.swift */,
+				4DEDBCC028BBE65000F8001A /* Owner+CoreDataProperties.swift */,
+			);
+			path = CoreDataSubclasses;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,29 +413,29 @@
 			files = (
 				4D7C55E028B978280088FD0D /* StarredReposListViewModel.swift in Sources */,
 				4D54350728B804FF005BF31B /* EmptyStateView.swift in Sources */,
+				4DEDBCC128BBE65000F8001A /* Owner+CoreDataProperties.swift in Sources */,
 				4DEDBCB728BBC22700F8001A /* StarredRepoViewModel.swift in Sources */,
 				4DE627D428B6BB8400FB333F /* User.swift in Sources */,
 				4D7C55B128B956440088FD0D /* GithubReposModels.xcdatamodeld in Sources */,
 				4D25BBC328B550C500AB27AC /* RepoListScreen.swift in Sources */,
 				4D5434FE28B77888005BF31B /* Service.swift in Sources */,
-				4D7C55DB28B964520088FD0D /* Owner+CoreDataClass.swift in Sources */,
 				4D7C55AE28B923390088FD0D /* RepoDetailsViewModel.swift in Sources */,
 				4D54350028B7C11A005BF31B /* RepoService.swift in Sources */,
+				4DEDBCBB28BBE63100F8001A /* StarredRepo+CoreDataClass.swift in Sources */,
 				4D25BBC528B55A2100AB27AC /* StarredReposListScreen.swift in Sources */,
 				4D7C55AC28B8F9080088FD0D /* RepoDetailsScreen.swift in Sources */,
-				4D7C55D528B963660088FD0D /* StarredRepo+CoreDataClass.swift in Sources */,
 				4D54350228B7E2AE005BF31B /* ButtonComponent.swift in Sources */,
 				4D11225828B41024005A706B /* RepoSearchScreen.swift in Sources */,
-				4D7C55DC28B964520088FD0D /* Owner+CoreDataProperties.swift in Sources */,
 				4D11222F28B40F79005A706B /* ContentView.swift in Sources */,
-				4D7C55D628B963660088FD0D /* StarredRepo+CoreDataProperties.swift in Sources */,
 				4D7C55DE28B964FA0088FD0D /* PersistenceService.swift in Sources */,
 				4D7C55AA28B8D2770088FD0D /* CoreDataManager.swift in Sources */,
 				4DE627CE28B644AC00FB333F /* EndPoint.swift in Sources */,
 				4D11225C28B41072005A706B /* RepoListRow.swift in Sources */,
+				4DEDBCBD28BBE64000F8001A /* StarredRepo+CoreDataProperties.swift in Sources */,
 				4D11222D28B40F79005A706B /* GithubReposApp.swift in Sources */,
 				4DE627D228B6B6F300FB333F /* Appearance.swift in Sources */,
 				4DE627CA28B6337000FB333F /* APIManager.swift in Sources */,
+				4DEDBCBF28BBE64900F8001A /* Owner+CoreDataClass.swift in Sources */,
 				4D11225E28B4139D005A706B /* MockRepos.swift in Sources */,
 				4D5434FC28B7784F005BF31B /* ReposListService.swift in Sources */,
 				4D11226128B414B6005A706B /* Repository.swift in Sources */,

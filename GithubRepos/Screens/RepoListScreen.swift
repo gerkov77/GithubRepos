@@ -9,7 +9,6 @@ import SwiftUI
 
 struct RepoListScreen {
     
-    
     @StateObject var viewModel = RepoListViewModel()
     @State var shouldShowDetailScreen: Bool = false
     @State var selectedRepo: Repository?
@@ -20,9 +19,7 @@ struct RepoListScreen {
     }
 }
 
-
 extension RepoListScreen: View {
-    
     
     var body: some View {
         
@@ -31,31 +28,28 @@ extension RepoListScreen: View {
                 EmptyStateView()
             }
             else {
-               
-                    List(selection: $selectedRepo) {
-                        ForEach(viewModel.repos,id: \.id) { repo in
-                            RepoListRow(
-                                repoName: repo.name,
-                                userName: repo.owner.login,
-                                imageUrl: repo.owner.avatarUrl
-                            )
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                shouldShowDetailScreen = true
-                                selectedRepo =  repo
-                            }
+                List(selection: $selectedRepo) {
+                    ForEach(viewModel.repos,id: \.id) { repo in
+                        RepoListRow(
+                            repoName: repo.name,
+                            userName: repo.owner.login,
+                            imageUrl: repo.owner.avatarUrl
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            shouldShowDetailScreen = true
+                            selectedRepo =  repo
                         }
-                        
-                            .sheet(isPresented: $shouldShowDetailScreen) {
-                                RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
-                            }
-                            .onDisappear {
-                                viewModel.resetSearch()
-                            }
-                        StateDependentView(userName: userName)
-                            .environmentObject(viewModel)
-                            
-                        }
+                    }
+                    .sheet(isPresented: $shouldShowDetailScreen) {
+                        RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
+                    }
+                    .onDisappear {
+                        viewModel.resetSearch()
+                    }
+                    StateDependentView(userName: userName)
+                        .environmentObject(viewModel)
+                }
             }
         }
         .onAppear {
@@ -70,11 +64,10 @@ struct RepoListScreen_Previews: PreviewProvider {
     }
 }
 
-
 extension RepoListScreen {
     struct StateDependentView: View {
         @EnvironmentObject var viewModel: RepoListViewModel
-         let userName: String
+        let userName: String
         
         var body: some View {
             switch viewModel.state {
@@ -94,7 +87,8 @@ extension RepoListScreen {
             case .loadedAll:
                 EmptyView()
             case .error(let error):
-                Text("Error fetching repos \(error)")
+                Text("Error fetching repos - \(error)")
+                    .foregroundColor(.red)
             }
         }
     }
