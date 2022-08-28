@@ -31,9 +31,8 @@ extension RepoListScreen: View {
                 EmptyStateView()
             }
             else {
-                    List(selection: $selectedRepo) {
-                        VStack {
-                            ForEach(viewModel.repos, id: \.id) { repo in
+                List(viewModel.repos,id: \.id, selection: $selectedRepo) { repo in
+                        
                                 RepoListRow(
                                     repoName: repo.name,
                                     userName: repo.owner.login,
@@ -47,12 +46,10 @@ extension RepoListScreen: View {
                                 .sheet(isPresented: $shouldShowDetailScreen) {
                                     RepoDetailsScreen(name: selectedRepo?.name ?? "Could not fetch name", user: (selectedRepo?.owner.login) ?? "Could not fetch user")
                                 }
-                            }
-                        }
+                    
                         StateDependentView(userName: userName)
                             .environmentObject(viewModel)
                     }
-
                 .onDisappear {
                     viewModel.resetSearch()
                 }

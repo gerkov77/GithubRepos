@@ -10,7 +10,7 @@ import CoreData
 import SwiftUI
 import Combine
 
-class PersistenceService: ObservableObject {
+class PersistenceService: NSObject,  ObservableObject {
     
     @Published var repos: [StarredRepo] = []
     @Published var currentRepoIsStarred: Bool = false
@@ -28,35 +28,32 @@ class PersistenceService: ObservableObject {
             cacheName: nil)
         do {
             try frc.performFetch()
-            
-                 frc.fetchedObjects.publisher.sink { repos in
-                    self.repos = repos
-                }
-                 .store(in: &self.bag)
-            
-        
-        }
-        
-        catch let err {
+            frc.fetchedObjects.publisher.sink { repos in
+                self.repos = repos
+            }
+            .store(in: &self.bag)
+        } catch let err {
             print(err.localizedDescription)
         }
     }
     
     func checkIfItemExist(id: Int, name: String) -> Bool {
-
-        let context = manager.container.viewContext
-        let request = StarredRepo.fetchRequest()
+        
+        let context = manager.viewContext
+        let request: NSFetchRequest<StarredRepo> = StarredRepo.fetchRequest()
+        request.sortDescriptors =  [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
         request.fetchLimit =  1
         let stringId = String(id)
         request.predicate = NSPredicate(format: "serverId == %@", stringId)
         request.predicate = NSPredicate(format: "name == %@", name)
-
+       
         do {
             let count = try context.count(for: request)
             if count > 0 {
                 print(">> Count for predicate: \(count)")
                 DispatchQueue.main.async {
                     [weak self] in
+                    //TODO: move this to viewModel!
                     self?.currentRepoIsStarred = true
                 }
                 return true
@@ -72,13 +69,13 @@ class PersistenceService: ObservableObject {
     func save(repo: Repository) throws {
         guard checkIfItemExist(id: repo.id, name: repo.name) == false else {
             print(">>Already starred!")
-        
+            
             throw PersistenceError.itemAlreadySaved
         }
         
         let context = manager.container.viewContext
         let stRepo = StarredRepo(context: context)
-
+        
         let owner = Owner(context: context)
         owner.login = repo.owner.login
         owner.avatarUrl = repo.owner.avatarUrl
@@ -90,16 +87,14 @@ class PersistenceService: ObservableObject {
         stRepo.info = repo.description
         stRepo.serverId = String(repo.id)
         
-        do {
-            try context.save()
-        } catch let err {
-            print(err.localizedDescription)
-        }
+        manager.saveContext()
     }
     
     enum PersistenceError: Error {
         case itemAlreadySaved
         case savingError
+        case deleteError
+        case itemNotFound
         
         var message: String {
             switch self {
@@ -107,41 +102,48 @@ class PersistenceService: ObservableObject {
                 return "This repo is already starred"
             case .savingError:
                 return "There was an error saving the repo"
+            case .deleteError:
+                return "There was an error deleting this entry"
+            case .itemNotFound:
+                return "The item to delete was not found"
             }
         }
     }
 }
 
 extension PersistenceService {
-    func remove(repo: Repository) {
-        let context = manager.container.viewContext
+    
+    
+    func delete(_ repo: StarredRepoViewModel) {
         
-     fetchStarredRepos()
-        print(">>repos in remove: \(repos)")
-        guard let starred = self.repos.first(where: { starred in
-                        starred.serverId == String(repo.id) &&
-                        starred.name == repo.name
-        }) else { return }
-        guard let index = repos.firstIndex(of: starred) else { return}
-
-        
-     
-        let owner = Owner(context: context)
-        owner.removeFromRepos(starred)
-        context.delete(starred)
-//        let reposIndex = repos.firstIndex(of: starred)
-        DispatchQueue.main.async {
-            [weak self] in
-            self?.repos.remove(at: index)
+        guard let existingRepo = manager.getRepoById(repo.id) else {
+            return
         }
-        
-        do {
-            try context.save()
-        }
-        catch let err {
-            print(err.localizedDescription)
-        }
+        manager.deleteRepo(existingRepo)
     }
+//    func remove(repo: Repository) throws {
+//        let context = manager.container.viewContext
+//
+//        fetchStarredRepos()
+//        print(">>repos in remove: \(repos)")
+//        guard let starred = self.repos.first(where: { starred in
+//            starred.serverId == String(repo.id) &&
+//            starred.name == repo.name
+//        }) else { throw PersistenceError.itemNotFound }
+//        guard let index = repos.firstIndex(of: starred) else { return}
+//
+//
+//
+//        let owner = Owner(context: context)
+//        owner.removeFromRepos(starred)
+//        context.delete(starred)
+//        //        let reposIndex = repos.firstIndex(of: starred)
+//        DispatchQueue.main.async {
+//            [weak self] in
+//            self?.repos.remove(at: index)
+//        }
+//        manager.saveContext()
+//    }
 }
 
 extension PersistenceService {
@@ -149,9 +151,21 @@ extension PersistenceService {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         formatter.locale = Calendar.current.locale
-     
+        
         let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
-       return date
+        return date
     }
     
 }
+
+extension PersistenceService {
+    
+}
+
+//
+//extension PersistenceService:  NSFetchedResultsControllerDelegate {
+//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//        objectWillChange.send()
+//        try! controller.performFetch()
+//    }
+//}

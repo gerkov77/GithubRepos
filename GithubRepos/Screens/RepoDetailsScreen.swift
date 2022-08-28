@@ -28,9 +28,10 @@ extension RepoDetailsScreen: View {
                 Spacer()
                 
                 StarButton(action: {
-                    viewModel.isStarred ?
-                    viewModel.removeFromStarredRepos() :
-                    viewModel.saveToStarredRepos()
+                    if !viewModel.isStarred {
+                        viewModel.addRepo()
+                    }
+                    
                 }, starred: viewModel.isStarred)
                 .padding(.bottom, 100)
                 .navigationTitle(Text(name))
@@ -130,7 +131,7 @@ extension StarButton: View {
                     Image(systemName: "star.fill")
                         .foregroundColor(.orange)
                     
-                    Text("Remove")
+                    Text("Starred")
                         .foregroundColor(.orange)
                 }
                 

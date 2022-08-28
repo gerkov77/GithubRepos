@@ -15,6 +15,10 @@ class RepoDetailsViewModel: ObservableObject {
         case processing
     }
     
+   
+    private(set) var apiService: RepoService = RepoService()
+    private(set) var persistenceService: PersistenceService = PersistenceService()
+    
     @Published var repo: Repository?
     @Published var state: State = .idle
     @Published var isStarred: Bool = false {
@@ -22,8 +26,8 @@ class RepoDetailsViewModel: ObservableObject {
             print(">> did set is starred: \(isStarred)")
         }
     }
-    private(set) var apiService: RepoService = RepoService()
-    private(set) var persistenceService: PersistenceService = PersistenceService()
+    
+
     var bag = Set<AnyCancellable>()
     
     
@@ -40,7 +44,7 @@ class RepoDetailsViewModel: ObservableObject {
                 await MainActor.run { [weak self] in
                     apiService.$repo.sink { repo in
                         self?.repo = repo
-                        self?.checkRepoStarred()
+                        self?.checkExists()
                     }
                     .store(in: &bag)
                     self?.state = .idle
@@ -53,24 +57,9 @@ class RepoDetailsViewModel: ObservableObject {
     }
 }
 
-extension RepoDetailsViewModel {
-    var formattedDate: String  {
-        var date = Date()
-        let formatter = DateFormatter()
-        
-        if let unWrappedRepo = repo {
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            formatter.locale = Calendar.current.locale
-            let dateString = unWrappedRepo.createdAt
-            date = formatter.date(from: dateString) ?? Date.init(timeIntervalSince1970:  0)
-            formatter.dateStyle = .medium
-        }
-        return  formatter.string(from: date)
-    }
-}
 
 extension RepoDetailsViewModel {
-    func saveToStarredRepos() {
+    func addRepo() {
         guard let unwrappedRepo = repo else { return }
         state = .processing
         Task {
@@ -78,7 +67,7 @@ extension RepoDetailsViewModel {
                 try  persistenceService.save(repo: unwrappedRepo)
                 await MainActor.run { [weak self] in
                     self?.state = .idle
-                    checkRepoStarred()
+                    checkExists()
                 }
             }
             catch let err as PersistenceService.PersistenceError {
@@ -88,22 +77,32 @@ extension RepoDetailsViewModel {
         }
     }
     
-    func removeFromStarredRepos() {
-       
-        state = .processing
-        guard let unwrappeRepo = repo else {
-            return
-        }
-        persistenceService.remove(repo: unwrappeRepo)
-        DispatchQueue.main.async { [weak self] in
-                self?.state = .idle
-                self?.isStarred = false
-            }
-    }
+//    func remove() {
+//
+//        state = .processing
+//        guard let unwrappeRepo = repo else {
+//            return
+//        }
+//        Task {
+//            do {
+//                try  persistenceService.remove(repo: unwrappeRepo)
+//                await MainActor.run(body: {
+//                  [weak self] in
+//                            self?.state = .idle
+//                            self?.isStarred = false
+//
+//                })
+//            } catch let err as PersistenceService.PersistenceError {
+//                print(err.message)
+//            }
+//        }
+//
+//
+//    }
 }
 
 extension RepoDetailsViewModel {
-    func checkRepoStarred() {
+    func checkExists() {
         guard let id = repo?.id,
               let name = repo?.name
         else {
@@ -124,3 +123,18 @@ extension RepoDetailsViewModel {
     }
 }
 
+extension RepoDetailsViewModel {
+    var formattedDate: String  {
+        var date = Date()
+        let formatter = DateFormatter()
+        
+        if let unWrappedRepo = repo {
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            formatter.locale = Calendar.current.locale
+            let dateString = unWrappedRepo.createdAt
+            date = formatter.date(from: dateString) ?? Date.init(timeIntervalSince1970:  0)
+            formatter.dateStyle = .medium
+        }
+        return  formatter.string(from: date)
+    }
+}

@@ -33,9 +33,11 @@ struct CoreDataManager {
         return result
     }()
 
-    
-
     let container: NSPersistentContainer
+    
+    var viewContext: NSManagedObjectContext {
+        return container.viewContext
+    }
     
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "GithubReposModels")
@@ -64,12 +66,28 @@ struct CoreDataManager {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
     
+    
+    func deleteRepo(_ repo: StarredRepo) {
+        viewContext.delete(repo)
+        saveContext()
+    }
+    
+    func getRepoById(_ id: NSManagedObjectID) -> StarredRepo? {
+        do {
+            return try viewContext.existingObject(with: id) as? StarredRepo
+        }
+        catch {
+            return nil
+        }
+    }
+    
     func saveContext() {
-        if container.viewContext.hasChanges {
+        if viewContext.hasChanges {
             do {
                 try container.viewContext.save()
             } catch {
                 print("An error occurred while saving: \(error)")
+                viewContext.rollback()
             }
         }
     }
