@@ -40,6 +40,7 @@
 		4DE627D028B666CD00FB333F /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627CF28B666CD00FB333F /* EndpointTests.swift */; };
 		4DE627D228B6B6F300FB333F /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627D128B6B6F300FB333F /* Appearance.swift */; };
 		4DE627D428B6BB8400FB333F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DE627D328B6BB8400FB333F /* User.swift */; };
+		4DEDBCB728BBC22700F8001A /* StarredRepoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +97,7 @@
 		4DE627CF28B666CD00FB333F /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
 		4DE627D128B6B6F300FB333F /* Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		4DE627D328B6BB8400FB333F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredRepoViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +267,7 @@
 				4DE627C728B628B300FB333F /* RepoListViewModel.swift */,
 				4D7C55AD28B923390088FD0D /* RepoDetailsViewModel.swift */,
 				4D7C55DF28B978280088FD0D /* StarredReposListViewModel.swift */,
+				4DEDBCB628BBC22700F8001A /* StarredRepoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 			files = (
 				4D7C55E028B978280088FD0D /* StarredReposListViewModel.swift in Sources */,
 				4D54350728B804FF005BF31B /* EmptyStateView.swift in Sources */,
+				4DEDBCB728BBC22700F8001A /* StarredRepoViewModel.swift in Sources */,
 				4DE627D428B6BB8400FB333F /* User.swift in Sources */,
 				4D7C55B128B956440088FD0D /* GithubReposModels.xcdatamodeld in Sources */,
 				4D25BBC328B550C500AB27AC /* RepoListScreen.swift in Sources */,

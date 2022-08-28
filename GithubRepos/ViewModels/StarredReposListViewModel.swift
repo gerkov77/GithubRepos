@@ -21,10 +21,6 @@ class StarredReposListViewModel: ObservableObject {
             .removeDuplicates()
             .sink { repos in
                 self.repos = repos.map(StarredRepoViewModel.init)
-                    
-            for repo in repos {
-                print("stored repo: \(repo.serverId), \(repo.name), \(repo.owner?.login), \(repo.owner?.avatarUrl)")
-            }
         }
         .store(in: &bag)
     }
@@ -32,25 +28,5 @@ class StarredReposListViewModel: ObservableObject {
     func delete(_ repo: StarredRepoViewModel) {
         service.delete(repo)
         fetchRepos()
-    }
-}
-
-struct StarredRepoViewModel: Hashable {
-    let repo: StarredRepo
-    
-    var id: NSManagedObjectID {
-        return repo.objectID
-    }
-    
-    var name: String {
-        return repo.name
-    }
-    
-    var avatarUrl: String {
-        return repo.owner?.avatarUrl ?? ""
-    }
-    
-    var ownerName: String {
-        return repo.owner?.login ?? "Could not fetch username"
     }
 }

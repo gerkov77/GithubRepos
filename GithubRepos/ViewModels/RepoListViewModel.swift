@@ -71,11 +71,3 @@ final class RepoListViewModel: ObservableObject {
         apiService.page = 1
     }
 }
-
-
-extension RepoListViewModel {
-    
-    func saveRepo(repo: Repository) {
-        
-    }
-}

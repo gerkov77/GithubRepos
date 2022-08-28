@@ -76,29 +76,6 @@ extension RepoDetailsViewModel {
             }
         }
     }
-    
-//    func remove() {
-//
-//        state = .processing
-//        guard let unwrappeRepo = repo else {
-//            return
-//        }
-//        Task {
-//            do {
-//                try  persistenceService.remove(repo: unwrappeRepo)
-//                await MainActor.run(body: {
-//                  [weak self] in
-//                            self?.state = .idle
-//                            self?.isStarred = false
-//
-//                })
-//            } catch let err as PersistenceService.PersistenceError {
-//                print(err.message)
-//            }
-//        }
-//
-//
-//    }
 }
 
 extension RepoDetailsViewModel {
