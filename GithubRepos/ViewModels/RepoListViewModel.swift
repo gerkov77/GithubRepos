@@ -18,11 +18,8 @@ final class RepoListViewModel: ObservableObject {
     }
 
     @Published var repos: [Repository] = []
-    @Published var state: State = .idle {
-        didSet {
-            print("state is now \(state)")
-        }
-    }
+    @Published var state: State = .idle
+    @Published var shouldShowNetworkError: Bool = false
 
     private(set) var apiService: ReposListServiceProtocol = ReposListService()
     private(set) var storageService: PersistenceServiceProtocol = PersistenceService()
@@ -49,6 +46,7 @@ final class RepoListViewModel: ObservableObject {
                 await MainActor.run { [weak self] in
                     self?.state = .error(">>Could not load repos –\(err.localizedDescription)")
                     print(err.localizedDescription)
+                    shouldShowNetworkError = true
                 }
             }
         }

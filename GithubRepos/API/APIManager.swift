@@ -22,6 +22,17 @@ struct APIManager: APIManagerProtocol {
         case invaludUrl
         case invalidData
         case unableToComplete
+
+        var message: String {
+            switch self {
+            case .invaludUrl:
+                return "There was a problem with the url"
+            case .invalidData:
+                return "There was a problem with the received data"
+            case .unableToComplete:
+                return "App was unable to complete the operation, check your internet connectioin"
+            }
+        }
     }
 }
 
