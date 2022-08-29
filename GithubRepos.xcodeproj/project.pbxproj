@@ -20,7 +20,6 @@
 		4D25BBC328B550C500AB27AC /* RepoListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D25BBC228B550C500AB27AC /* RepoListScreen.swift */; };
 		4D25BBC528B55A2100AB27AC /* StarredReposListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D25BBC428B55A2100AB27AC /* StarredReposListScreen.swift */; };
 		4D5434FC28B7784F005BF31B /* ReposListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5434FB28B7784F005BF31B /* ReposListService.swift */; };
-		4D5434FE28B77888005BF31B /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5434FD28B77888005BF31B /* Service.swift */; };
 		4D54350028B7C11A005BF31B /* RepoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5434FF28B7C11A005BF31B /* RepoService.swift */; };
 		4D54350228B7E2AE005BF31B /* ButtonComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54350128B7E2AE005BF31B /* ButtonComponent.swift */; };
 		4D54350728B804FF005BF31B /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54350628B804FF005BF31B /* EmptyStateView.swift */; };
@@ -77,7 +76,6 @@
 		4D25BBC228B550C500AB27AC /* RepoListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoListScreen.swift; sourceTree = "<group>"; };
 		4D25BBC428B55A2100AB27AC /* StarredReposListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredReposListScreen.swift; sourceTree = "<group>"; };
 		4D5434FB28B7784F005BF31B /* ReposListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposListService.swift; sourceTree = "<group>"; };
-		4D5434FD28B77888005BF31B /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		4D5434FF28B7C11A005BF31B /* RepoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoService.swift; sourceTree = "<group>"; };
 		4D54350128B7E2AE005BF31B /* ButtonComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonComponent.swift; sourceTree = "<group>"; };
 		4D54350628B804FF005BF31B /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
@@ -235,7 +233,6 @@
 			children = (
 				4D5434FB28B7784F005BF31B /* ReposListService.swift */,
 				4D5434FF28B7C11A005BF31B /* RepoService.swift */,
-				4D5434FD28B77888005BF31B /* Service.swift */,
 				4D7C55DD28B964FA0088FD0D /* PersistenceService.swift */,
 			);
 			path = Services;
@@ -423,7 +420,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, 'brew install swiftlint' or download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint \nelse\necho \"warning: SwiftLint not installed, 'brew install swiftlint' or download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -439,7 +436,6 @@
 				4DE627D428B6BB8400FB333F /* User.swift in Sources */,
 				4D7C55B128B956440088FD0D /* GithubReposModels.xcdatamodeld in Sources */,
 				4D25BBC328B550C500AB27AC /* RepoListScreen.swift in Sources */,
-				4D5434FE28B77888005BF31B /* Service.swift in Sources */,
 				4D7C55AE28B923390088FD0D /* RepoDetailsViewModel.swift in Sources */,
 				4D54350028B7C11A005BF31B /* RepoService.swift in Sources */,
 				4DEDBCBB28BBE63100F8001A /* StarredRepo+CoreDataClass.swift in Sources */,

@@ -8,16 +8,16 @@
 import UIKit
 import SwiftUI
 
-typealias Appfonts = GHR.Appearance.Font
+typealias Appfonts = GTHR.Appearance.Font
 
-enum GHR {
+enum GTHR {
     enum Appearance {
         static let screenWidth = UIScreen.main.bounds.width
         static let screenHeigth = UIScreen.main.bounds.height
     }
 }
 
-extension GHR.Appearance {
+extension GTHR.Appearance {
     enum Font {
         case light(size: CGFloat)
         case regular(size: CGFloat)

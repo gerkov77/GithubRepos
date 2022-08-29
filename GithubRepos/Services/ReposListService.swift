@@ -21,7 +21,6 @@ protocol ReposListServiceProtocol: ReposPublisher {
 
  class ReposListService: ReposPublisher, ReposListServiceProtocol, ObservableObject {
 
-
     @Published var allReposCount: Int = 0
      private(set)var api: APIManagerProtocol = APIManager.shared
 
@@ -48,7 +47,7 @@ protocol ReposListServiceProtocol: ReposPublisher {
              haveMore = false
          }
      }
-     
+
      func resetSearch() {
          haveMore = true
          page = 1

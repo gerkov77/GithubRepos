@@ -15,8 +15,8 @@ class RepoDetailsViewModel: ObservableObject {
         case processing
     }
 
-    private(set) var apiService: RepoService = RepoService()
-    private(set) var persistenceService: PersistenceService = PersistenceService()
+    private(set) var apiService: RepoServiceProtocol = RepoService()
+    private(set) var persistenceService: PersistenceServiceProtocol = PersistenceService()
 
     @Published var repo: Repository?
     @Published var state: State = .idle

@@ -24,13 +24,16 @@ protocol PersistenceServiceProtocol: StarredRepoPublisher {
 
 class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
 
-
     var manager: CoreDataManagerProtocol = CoreDataManager.shared
     var bag = Set<AnyCancellable>()
 
     func fetchStarredRepos() throws {
         let request = StarredRepo.fetchRequest()
-        request.sortDescriptors = [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
+        request.sortDescriptors = [
+            .init(key: "name",
+                  ascending: true,
+                  selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        ]
         let frc = NSFetchedResultsController(
             fetchRequest: request,
             managedObjectContext: manager.viewContext,
@@ -51,7 +54,11 @@ class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
     func checkIfItemExist(id: Int, name: String) -> Bool {
         let context = manager.viewContext
         let request: NSFetchRequest<StarredRepo> = StarredRepo.fetchRequest()
-        request.sortDescriptors =  [.init(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))]
+        request.sortDescriptors =  [
+            .init(key: "name",
+                  ascending: true,
+                  selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        ]
         request.fetchLimit =  1
         let stringId = String(id)
         request.predicate = NSPredicate(format: "serverId == %@", stringId)
