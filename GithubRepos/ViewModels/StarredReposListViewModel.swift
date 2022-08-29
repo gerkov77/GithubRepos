@@ -11,7 +11,7 @@ import CoreData
 
 class StarredReposListViewModel: ObservableObject {
 
-  let service = PersistenceService()
+    private(set)var service: PersistenceServiceProtocol = PersistenceService()
 
     @Published var repos: [StarredRepoViewModel] = []
     @Published var searchText = ""

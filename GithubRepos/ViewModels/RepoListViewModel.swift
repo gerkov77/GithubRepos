@@ -24,7 +24,7 @@ final class RepoListViewModel: ObservableObject {
         }
     }
 
-    private var apiService = ReposListService()
+    private var apiService: ReposListServiceProtocol = ReposListService()
     private var storageService = PersistenceService()
     private var bag = Set<AnyCancellable>()
 
@@ -66,7 +66,6 @@ final class RepoListViewModel: ObservableObject {
     }
 
     func resetSearch() {
-        apiService.hasMoreRepos = true
-        apiService.page = 1
+        apiService.resetSearch()
     }
 }

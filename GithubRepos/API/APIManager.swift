@@ -9,6 +9,7 @@ import Foundation
 
 protocol APIManagerProtocol {
     func fetchRepos(endpoint: Endpoint) async throws -> [Repository]
+    func fetchRepo(endpoint: Endpoint) async throws -> Repository
 }
 
 struct APIManager: APIManagerProtocol {

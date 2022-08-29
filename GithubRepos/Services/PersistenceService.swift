@@ -10,11 +10,22 @@ import CoreData
 import SwiftUI
 import Combine
 
-class PersistenceService: NSObject,  ObservableObject {
-
+class StarredRepoPublisher: ObservableObject {
     @Published var repos: [StarredRepo] = []
+}
 
-    let manager = CoreDataManager.shared
+protocol PersistenceServiceProtocol: StarredRepoPublisher {
+    var manager: CoreDataManagerProtocol { get }
+    func fetchStarredRepos() throws
+    func checkIfItemExist(id: Int, name: String) -> Bool
+    func save(repo: Repository) throws
+    func delete(_ repo: StarredRepoViewModel)
+}
+
+class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
+
+
+    var manager: CoreDataManagerProtocol = CoreDataManager.shared
     var bag = Set<AnyCancellable>()
 
     func fetchStarredRepos() throws {

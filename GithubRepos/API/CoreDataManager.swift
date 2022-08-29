@@ -8,7 +8,15 @@
 import Foundation
 import CoreData
 
-struct CoreDataManager {
+protocol CoreDataManagerProtocol {
+    var container: NSPersistentContainer { get }
+    var viewContext: NSManagedObjectContext { get }
+    func deleteRepo(_ repo: StarredRepo)
+    func getRepoById(_ id: NSManagedObjectID) -> StarredRepo?
+    func saveContext()
+}
+
+struct CoreDataManager: CoreDataManagerProtocol {
 
     static let shared = CoreDataManager()
 

@@ -10,7 +10,7 @@ import Foundation
 class RepoService: ObservableObject {
 
     @Published var repo: Repository?
-    var api: APIManager =  APIManager.shared
+    private(set) var api: APIManagerProtocol =  APIManager.shared
 
     func fetchRepo(user: String, repo: String) async throws {
 
