@@ -53,7 +53,9 @@ extension RepoListScreen: View {
             }
         }
         .alert(isPresented: $viewModel.shouldShowNetworkError) {
-            Alert(title: Text("Error 🤔"), message: Text("App was unable to download repos from the internet, check your connection"), dismissButton: .cancel(Text("Ok")))
+            Alert(title: Text("Error 🤔"),
+                  message: Text("App was unable to download repos from the internet, check your connection"),
+                  dismissButton: .cancel(Text("Ok")))
         }
         .onAppear {
             viewModel.fetchRepos(userName: userName)
