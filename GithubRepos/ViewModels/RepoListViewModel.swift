@@ -24,8 +24,8 @@ final class RepoListViewModel: ObservableObject {
         }
     }
 
-    private var apiService: ReposListServiceProtocol = ReposListService()
-    private var storageService = PersistenceService()
+    private(set) var apiService: ReposListServiceProtocol = ReposListService()
+    private(set) var storageService: PersistenceServiceProtocol = PersistenceService()
     private var bag = Set<AnyCancellable>()
 
     init() {
