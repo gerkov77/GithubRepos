@@ -11,8 +11,8 @@ import CoreData
 protocol CoreDataManagerProtocol {
     var container: NSPersistentContainer { get }
     var viewContext: NSManagedObjectContext { get }
-    func deleteRepo(_ repo: StarredRepo)
-    func getRepoById(_ id: NSManagedObjectID) -> StarredRepo?
+    func deleteItem<Item: NSManagedObject>(_ repo: Item)
+    func getItemById<Item: NSManagedObject>(_ id: NSManagedObjectID, requestedType: Item.Type) -> Item?
     func saveContext()
 }
 
@@ -58,14 +58,15 @@ struct CoreDataManager: CoreDataManagerProtocol {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 
-    func deleteRepo(_ repo: StarredRepo) {
+    func deleteItem<Item: NSManagedObject>(_ repo: Item) {
         viewContext.delete(repo)
         saveContext()
     }
 
-    func getRepoById(_ id: NSManagedObjectID) -> StarredRepo? {
+    func getItemById<Item>(_ id: NSManagedObjectID,
+                           requestedType: Item.Type) -> Item? where Item : NSManagedObject {
         do {
-            return try viewContext.existingObject(with: id) as? StarredRepo
+            return try viewContext.existingObject(with: id) as? Item
         } catch {
             return nil
         }
