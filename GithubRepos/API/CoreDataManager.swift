@@ -58,8 +58,8 @@ struct CoreDataManager: CoreDataManagerProtocol {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 
-    func deleteItem<Item: NSManagedObject>(_ repo: Item) {
-        viewContext.delete(repo)
+    func deleteItem<Item: NSManagedObject>(_ item: Item) {
+        viewContext.delete(item)
         saveContext()
     }
 

@@ -124,32 +124,12 @@ extension PersistenceService {
 }
 
 extension PersistenceService {
-    func createDate(from string: String) -> Date {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        formatter.locale = Calendar.current.locale
-        let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
-        return date
-    }
-}
-
-extension PersistenceService {
-    fileprivate func createOwner(forRepo repo: Repository,
-                                 context: NSManagedObjectContext) -> Owner {
-        let owner = Owner(context: context)
-        owner.login = repo.owner.login
-        owner.avatarUrl = repo.owner.avatarUrl
-        return owner
-    }
-}
-
-extension PersistenceService {
-    fileprivate func addOwnerToStarredRepo(repo: Repository,
-                                           stRepo: StarredRepo,
-                                           context: NSManagedObjectContext) {
-        let owner = createOwner(forRepo: repo, context: context)
-        owner.addToRepos(stRepo)
-        stRepo.owner = owner
+    fileprivate func createStarredRepo(_ repo: Repository) {
+        let context = manager.container.viewContext
+        let stRepo = StarredRepo(context: context)
+        setupStarredRepo(stRepo: stRepo,
+                         from: repo,
+                         context: context)
     }
 }
 
@@ -169,11 +149,31 @@ extension PersistenceService {
 }
 
 extension PersistenceService {
-    fileprivate func createStarredRepo(_ repo: Repository) {
-        let context = manager.container.viewContext
-        let stRepo = StarredRepo(context: context)
-        setupStarredRepo(stRepo: stRepo,
-                         from: repo,
-                         context: context)
+    fileprivate func addOwnerToStarredRepo(repo: Repository,
+                                           stRepo: StarredRepo,
+                                           context: NSManagedObjectContext) {
+        let owner = createOwner(forRepo: repo, context: context)
+        owner.addToRepos(stRepo)
+        stRepo.owner = owner
+    }
+}
+
+extension PersistenceService {
+    fileprivate func createOwner(forRepo repo: Repository,
+                                 context: NSManagedObjectContext) -> Owner {
+        let owner = Owner(context: context)
+        owner.login = repo.owner.login
+        owner.avatarUrl = repo.owner.avatarUrl
+        return owner
+    }
+}
+
+extension PersistenceService {
+    func createDate(from string: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        formatter.locale = Calendar.current.locale
+        let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
+        return date
     }
 }
