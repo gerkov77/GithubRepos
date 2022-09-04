@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ReposPublisher {
+class ReposPublisher: ObservableObject {
     @Published var repos: [Repository] = []
 }
 
@@ -19,7 +19,7 @@ protocol ReposListServiceProtocol: ReposPublisher {
     func resetSearch()
 }
 
-class ReposListService: ReposPublisher, ReposListServiceProtocol, ObservableObject {
+class ReposListService: ReposPublisher, ReposListServiceProtocol {
 
     var api: ApiManagerProtocol = APIManager.shared
 
