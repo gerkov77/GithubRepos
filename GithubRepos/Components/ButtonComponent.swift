@@ -10,9 +10,12 @@ import SwiftUI
 struct ButtonComponent {
     let action: () -> Void
     let text: String
-    init(action: @escaping () -> Void, text: String) {
+    let isActive: Bool
+
+    init(action: @escaping () -> Void, text: String, isActive: Bool) {
         self.action = action
         self.text = text
+        self.isActive = isActive
     }
 }
 
@@ -29,7 +32,7 @@ extension ButtonComponent: View {
                     .padding()
                 Spacer()
             }
-            .background(Color.blue)
+            .background(isActive ? Color.blue : Color.gray)
             .cornerRadius(10)
         }
     }
@@ -37,6 +40,6 @@ extension ButtonComponent: View {
 
 struct ButtonComponent_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonComponent(action: {}, text: "Button")
+        ButtonComponent(action: {}, text: "Button", isActive: true)
     }
 }

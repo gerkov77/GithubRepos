@@ -39,16 +39,15 @@ struct RepoSearchScreen: View {
                 NavigationLink(isActive: $shouldShowRepoList) {
                     RepoListScreen(userName: searchText)
                 } label: {
-                    EmptyView()
+                    ButtonComponent(action: {
+                        shouldShowRepoList = true
+                    },text: "Search repos",
+                    isActive: !searchText.isEmpty)
+                    .padding()
                 }
-
-                ButtonComponent(action: {
-                    shouldShowRepoList = true
-                }, text: "Search repos")
-                .padding()
                 .disabled(searchText.isEmpty)
+                .padding(.bottom, 40)
             }
-            .padding()
             .navigationBarHidden(true)
             .navigationViewStyle(StackNavigationViewStyle())
         }
