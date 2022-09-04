@@ -123,10 +123,10 @@ class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
 
 extension PersistenceService {
     func delete(_ repo: StarredRepoViewModel) {
-        guard let existingRepo = manager.getItemById(repo.id) else {
+        guard let existingRepo = manager.getRepoById(repo.id) else {
             return
         }
-        manager.deleteItem(existingRepo)
+        manager.deleteRepo(existingRepo)
     }
 }
 
