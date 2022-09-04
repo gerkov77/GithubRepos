@@ -21,7 +21,7 @@ class RepoService: RepoPublisher, RepoServiceProtocol, ObservableObject {
     private(set) var api: APIManagerProtocol =  APIManager.shared
 
     func fetchRepo(user: String, repo: String) async throws {
-        let repo =  try await api.fetchRepo(endpoint: .getRepo(user: user, repo: repo))
+        let repo =  try await api.fetchItem(endpoint: .getRepo(user: user, repo: repo))
         await MainActor.run(body: { [weak self] in
             self?.repo = repo
         })

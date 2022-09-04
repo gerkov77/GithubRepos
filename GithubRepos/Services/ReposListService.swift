@@ -30,7 +30,7 @@ protocol ReposListServiceProtocol: ReposPublisher {
      func fetchRepos(for user: String) async throws {
         if haveMore {
 
-                let res = try await api.fetchRepos(endpoint: .getRepos(for: user, page: page))
+                let res = try await api.fetchItems(endpoint: .getRepos(for: user, page: page))
                 await MainActor.run(body: { [weak self] in
 
                     self?.repos.append(contentsOf: res)
