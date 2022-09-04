@@ -144,7 +144,9 @@ extension PersistenceService {
 }
 
 extension PersistenceService {
-    fileprivate func addOwnerToStarredRepo(repo: Repository, stRepo: StarredRepo, context: NSManagedObjectContext) {
+    fileprivate func addOwnerToStarredRepo(repo: Repository,
+                                           stRepo: StarredRepo,
+                                           context: NSManagedObjectContext) {
         let owner = createOwner(forRepo: repo, context: context)
         owner.addToRepos(stRepo)
         stRepo.owner = owner

@@ -8,7 +8,7 @@
 import Foundation
 import CoreText
 
-class RepoPublisher {
+class RepoPublisher: ObservableObject {
     @Published var repo: Repository?
 }
 
@@ -17,7 +17,7 @@ protocol RepoServiceProtocol: RepoPublisher {
     func fetchRepo(user: String, repo: String) async throws
 }
 
-class RepoService: RepoPublisher, RepoServiceProtocol, ObservableObject {
+class RepoService: RepoPublisher, RepoServiceProtocol {
 
     private(set) var api: ApiManagerProtocol =  APIManager.shared
 
