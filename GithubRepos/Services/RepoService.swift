@@ -6,22 +6,25 @@
 //
 
 import Foundation
+import CoreText
 
 class RepoPublisher {
     @Published var repo: Repository?
 }
 
 protocol RepoServiceProtocol: RepoPublisher {
-    var api: APIManagerProtocol { get }
+    var api: ApiManagerProtocol { get }
     func fetchRepo(user: String, repo: String) async throws
 }
 
 class RepoService: RepoPublisher, RepoServiceProtocol, ObservableObject {
 
-    private(set) var api: APIManagerProtocol =  APIManager.shared
+    private(set) var api: ApiManagerProtocol =  APIManager.shared
 
     func fetchRepo(user: String, repo: String) async throws {
-        let repo =  try await api.fetchItem(endpoint: .getRepo(user: user, repo: repo))
+        let repo =  try await api.fetchItem(
+            endpoint: .getRepo(user: user, repo: repo),
+            requestedType: Repository.self)
         await MainActor.run(body: { [weak self] in
             self?.repo = repo
         })

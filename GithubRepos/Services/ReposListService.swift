@@ -12,17 +12,18 @@ class ReposPublisher {
 }
 
 protocol ReposListServiceProtocol: ReposPublisher {
-    var api: APIManagerProtocol { get }
+    var api: ApiManagerProtocol { get }
     var hasMoreRepos: Bool { get }
     func fetchRepos(for user: String) async throws
     func checkForMore()
     func resetSearch()
 }
 
- class ReposListService: ReposPublisher, ReposListServiceProtocol, ObservableObject {
+class ReposListService: ReposPublisher, ReposListServiceProtocol, ObservableObject {
+
+    var api: ApiManagerProtocol = APIManager.shared
 
     @Published var allReposCount: Int = 0
-     private(set)var api: APIManagerProtocol = APIManager.shared
 
     private var haveMore = true
     private var page = 1
@@ -30,7 +31,9 @@ protocol ReposListServiceProtocol: ReposPublisher {
      func fetchRepos(for user: String) async throws {
         if haveMore {
 
-                let res = try await api.fetchItems(endpoint: .getRepos(for: user, page: page))
+            let res = try await api.fetchItems(
+                endpoint: .getRepos(for: user, page: page),
+                requestedType: [Repository.self])
                 await MainActor.run(body: { [weak self] in
 
                     self?.repos.append(contentsOf: res)

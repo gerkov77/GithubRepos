@@ -7,16 +7,10 @@
 
 import Foundation
 
-protocol APIManagerProtocol {
-    func fetchItems(endpoint: Endpoint) async throws -> [Repository]
-    func fetchItem(endpoint: Endpoint) async throws -> Repository
-}
+struct APIManager: ApiManagerProtocol {
 
-struct APIManager: APIManagerProtocol {
-
-    static let shared  = APIManager()
-
-    private init() {}
+    static let shared = APIManager()
+     private init() {}
 
     enum ApiError: Error {
         case invaludUrl
@@ -37,7 +31,7 @@ struct APIManager: APIManagerProtocol {
 }
 
 extension APIManager {
-    func fetchItems<T: Codable>(endpoint: Endpoint) async throws -> [T] {
+    func fetchItems<Item: Codable>(endpoint: Endpoint, requestedType: [Item.Type]) async throws -> [Item] {
         guard let url: URL =  endpoint.url else {
             throw ApiError.invaludUrl
         }
@@ -52,14 +46,14 @@ extension APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-        let reposResult = try decoder.decode(Array<T>.self, from: data)
+        let reposResult = try decoder.decode(Array<Item>.self, from: data)
         print(reposResult)
         return reposResult
     }
 }
 
 extension APIManager {
-    func fetchItem<T: Codable>(endpoint: Endpoint) async throws -> T {
+    func fetchItem<Item: Codable>(endpoint: Endpoint, requestedType: Item.Type) async throws -> Item {
         guard let url: URL =  endpoint.url else {
             throw ApiError.invaludUrl
         }
@@ -73,7 +67,7 @@ extension APIManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
 
-        let result = try decoder.decode(T.self, from: data)
+        let result = try decoder.decode(Item.self, from: data)
         print(result)
         return result
     }

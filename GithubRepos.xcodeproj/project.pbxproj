@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D01CA3928C50ACC00111EDC /* ApiManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01CA3828C50ACC00111EDC /* ApiManagerProtocol.swift */; };
 		4D11222D28B40F79005A706B /* GithubReposApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D11222C28B40F79005A706B /* GithubReposApp.swift */; };
 		4D11222F28B40F79005A706B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D11222E28B40F79005A706B /* ContentView.swift */; };
 		4D11223128B40F7C005A706B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D11223028B40F7C005A706B /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4D01CA3828C50ACC00111EDC /* ApiManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerProtocol.swift; sourceTree = "<group>"; };
 		4D11222928B40F79005A706B /* GithubRepos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GithubRepos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D11222C28B40F79005A706B /* GithubReposApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubReposApp.swift; sourceTree = "<group>"; };
 		4D11222E28B40F79005A706B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 		4D5434FA28B7782B005BF31B /* API */ = {
 			isa = PBXGroup;
 			children = (
+				4D01CA3828C50ACC00111EDC /* ApiManagerProtocol.swift */,
 				4DE627C928B6337000FB333F /* APIManager.swift */,
 				4D7C55A928B8D2770088FD0D /* CoreDataManager.swift */,
 			);
@@ -420,7 +423,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint \nelse\necho \"warning: SwiftLint not installed, 'brew install swiftlint' or download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, 'brew install swiftlint' or download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -440,6 +443,7 @@
 				4D54350028B7C11A005BF31B /* RepoService.swift in Sources */,
 				4DEDBCBB28BBE63100F8001A /* StarredRepo+CoreDataClass.swift in Sources */,
 				4D25BBC528B55A2100AB27AC /* StarredReposListScreen.swift in Sources */,
+				4D01CA3928C50ACC00111EDC /* ApiManagerProtocol.swift in Sources */,
 				4D7C55AC28B8F9080088FD0D /* RepoDetailsScreen.swift in Sources */,
 				4D54350228B7E2AE005BF31B /* ButtonComponent.swift in Sources */,
 				4D11225828B41024005A706B /* RepoSearchScreen.swift in Sources */,
