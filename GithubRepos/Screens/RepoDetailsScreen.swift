@@ -15,7 +15,6 @@ struct RepoDetailsScreen {
 }
 
 extension RepoDetailsScreen: View {
-
     var body: some View {
         NavigationView {
             VStack {

@@ -37,7 +37,7 @@ struct CoreDataManager: CoreDataManagerProtocol {
         return result
     }()
 
-    let container: NSPersistentContainer
+    internal let container: NSPersistentContainer
 
     var viewContext: NSManagedObjectContext {
         return container.viewContext

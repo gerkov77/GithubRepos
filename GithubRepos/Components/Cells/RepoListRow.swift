@@ -14,7 +14,6 @@ struct RepoListRow {
 }
 
 extension RepoListRow: View {
-
     var body: some View {
         HStack {
             AsyncImage(url: URL(string: imageUrl), scale: 1) { image in
@@ -39,7 +38,6 @@ extension RepoListRow: View {
             Spacer()
         }
         .padding(8)
-//        .background(Color.orange)
     }
 }
 

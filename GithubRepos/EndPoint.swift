@@ -13,7 +13,6 @@ struct Endpoint {
 }
 
 extension Endpoint {
-
     static func getRepos(for user: String, page: Int) -> Endpoint {
         return Endpoint(
             path: "/users/\(user)/repos", queryItems: [

@@ -21,7 +21,6 @@ struct StarredReposListScreen {
 }
 
 extension StarredReposListScreen: View {
-
     var body: some View {
         NavigationView {
             List(selection: $selectedRepo) {

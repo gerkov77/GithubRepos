@@ -20,7 +20,6 @@ struct RepoListScreen {
 }
 
 extension RepoListScreen: View {
-
     var body: some View {
         Group {
             if viewModel.repos.isEmpty {

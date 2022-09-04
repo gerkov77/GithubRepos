@@ -24,9 +24,31 @@ protocol PersistenceServiceProtocol: StarredRepoPublisher {
 
 class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
 
+    enum PersistenceError: Error {
+        case itemAlreadySaved
+        case savingError
+        case deleteError
+        case itemNotFound
+
+        var message: String {
+            switch self {
+            case .itemAlreadySaved:
+                return "This repo is already starred"
+            case .savingError:
+                return "There was an error saving the repo"
+            case .deleteError:
+                return "There was an error deleting this entry"
+            case .itemNotFound:
+                return "The item to delete was not found"
+            }
+        }
+    }
+
     var manager: CoreDataManagerProtocol = CoreDataManager.shared
     var bag = Set<AnyCancellable>()
+}
 
+extension PersistenceService {
     func fetchStarredRepos() throws {
         let request = StarredRepo.fetchRequest()
         request.sortDescriptors = [
@@ -50,7 +72,9 @@ class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
             throw PersistenceError.itemNotFound
         }
     }
+}
 
+extension PersistenceService {
     func checkIfItemExist(id: Int, name: String) -> Bool {
         let context = manager.viewContext
         let request: NSFetchRequest<StarredRepo> = StarredRepo.fetchRequest()
@@ -78,46 +102,15 @@ class PersistenceService:  StarredRepoPublisher, PersistenceServiceProtocol {
             return false
         }
     }
+}
 
+extension PersistenceService {
     func save(repo: Repository) throws {
         guard checkIfItemExist(id: repo.id, name: repo.name) == false else {
             throw PersistenceError.itemAlreadySaved
         }
-
-        let context = manager.container.viewContext
-        let stRepo = StarredRepo(context: context)
-        let owner = Owner(context: context)
-        owner.login = repo.owner.login
-        owner.avatarUrl = repo.owner.avatarUrl
-        owner.addToRepos(stRepo)
-        stRepo.createdAt = createDate(from: repo.createdAt)
-        stRepo.language = repo.language
-        stRepo.owner = owner
-        stRepo.name = repo.name
-        stRepo.info = repo.description
-        stRepo.serverId = String(repo.id)
-
+        createStarredRepo(repo)
         manager.saveContext()
-    }
-
-    enum PersistenceError: Error {
-        case itemAlreadySaved
-        case savingError
-        case deleteError
-        case itemNotFound
-
-        var message: String {
-            switch self {
-            case .itemAlreadySaved:
-                return "This repo is already starred"
-            case .savingError:
-                return "There was an error saving the repo"
-            case .deleteError:
-                return "There was an error deleting this entry"
-            case .itemNotFound:
-                return "The item to delete was not found"
-            }
-        }
     }
 }
 
@@ -137,5 +130,48 @@ extension PersistenceService {
         formatter.locale = Calendar.current.locale
         let date = formatter.date(from: string) ?? Date.init(timeIntervalSince1970:  0)
         return date
+    }
+}
+
+extension PersistenceService {
+    fileprivate func createOwner(forRepo repo: Repository,
+                                 context: NSManagedObjectContext) -> Owner {
+        let owner = Owner(context: context)
+        owner.login = repo.owner.login
+        owner.avatarUrl = repo.owner.avatarUrl
+        return owner
+    }
+}
+
+extension PersistenceService {
+    fileprivate func addOwnerToStarredRepo(repo: Repository, stRepo: StarredRepo, context: NSManagedObjectContext) {
+        let owner = createOwner(forRepo: repo, context: context)
+        owner.addToRepos(stRepo)
+        stRepo.owner = owner
+    }
+}
+
+extension PersistenceService {
+    fileprivate func setupStarredRepo(stRepo: StarredRepo,
+                                      from repo: Repository,
+                                      context: NSManagedObjectContext) {
+        stRepo.createdAt = createDate(from: repo.createdAt)
+        stRepo.language = repo.language
+        stRepo.name = repo.name
+        stRepo.info = repo.description
+        stRepo.serverId = String(repo.id)
+        addOwnerToStarredRepo(repo: repo,
+                              stRepo: stRepo,
+                              context: context)
+    }
+}
+
+extension PersistenceService {
+    fileprivate func createStarredRepo(_ repo: Repository) {
+        let context = manager.container.viewContext
+        let stRepo = StarredRepo(context: context)
+        setupStarredRepo(stRepo: stRepo,
+                         from: repo,
+                         context: context)
     }
 }
