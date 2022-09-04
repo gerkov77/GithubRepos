@@ -41,13 +41,11 @@ extension APIManager {
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw ApiError.unableToComplete
         }
-        print(">>reponse: \(response)")
-        print(">>data: \(data)")
+
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-
         let reposResult = try decoder.decode(Array<Item>.self, from: data)
-        print(reposResult)
+
         return reposResult
     }
 }
@@ -66,9 +64,8 @@ extension APIManager {
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-
         let result = try decoder.decode(Item.self, from: data)
-        print(result)
+
         return result
     }
 }
