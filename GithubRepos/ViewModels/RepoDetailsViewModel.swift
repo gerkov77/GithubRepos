@@ -20,12 +20,7 @@ class RepoDetailsViewModel: ObservableObject {
 
     @Published var repo: Repository?
     @Published var state: State = .idle
-    @Published var isStarred: Bool = false {
-        didSet {
-            print(">> did set is starred: \(isStarred)")
-        }
-    }
-
+    @Published var isStarred: Bool = false 
     var bag = Set<AnyCancellable>()
 
     init() {}
