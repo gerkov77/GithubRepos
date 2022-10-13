@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct APIManager: ApiManagerProtocol {
+actor APIManager: ApiManagerProtocol {
 
     static let shared = APIManager()
      private init() {}

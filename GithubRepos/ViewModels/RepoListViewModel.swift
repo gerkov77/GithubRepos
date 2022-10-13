@@ -35,21 +35,20 @@ final class RepoListViewModel: ObservableObject {
         Task {
             do {
                 try await apiService.fetchRepos(for: userName)
-                await MainActor.run { [weak self] in
-                    apiService.$repos.sink { repos in
-                        self?.repos = repos
-                    }
-                    .store(in: &bag)
-                    finishedLoading()
-                }
+                   await fillRepos()
             } catch let err {
-                await MainActor.run { [weak self] in
-                    self?.state = .error(">>Could not load repos –\(err.localizedDescription)")
-                    print(err.localizedDescription)
-                    shouldShowNetworkError = true
-                }
+             await showError(error: err)
             }
         }
+    }
+
+    @MainActor
+    func fillRepos() {
+        apiService.$repos.sink { [weak self] repos in
+            self?.repos = repos
+        }
+        .store(in: &bag)
+        finishedLoading()
     }
 
     @MainActor
@@ -61,6 +60,13 @@ final class RepoListViewModel: ObservableObject {
             print(">>loaded all repos")
             state = .loadedAll
         }
+    }
+
+    @MainActor
+    func showError(error: Error) {
+            self.state = .error(">>Could not load repos –\(error.localizedDescription)")
+            print(error.localizedDescription)
+            shouldShowNetworkError = true
     }
 
     func resetSearch() {
